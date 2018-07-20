@@ -2,6 +2,9 @@ package br.com.xplorer.stepform;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,7 @@ import lib.view.stepform.models.MultipleQuestion;
 import lib.view.stepform.models.Question;
 import lib.view.stepform.models.SingleQuestion;
 import lib.view.stepform.models.Survey;
+import lib.view.stepform.models.action.ManagerLayoutQuestion;
 import lib.view.stepform.models.options.Option;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,9 +26,36 @@ public class MainActivity extends AppCompatActivity {
 
         List<Question> questions = new ArrayList<>();
 
+        Question<Boolean> question1 = new SingleQuestion<>(
+            new ManagerLayoutQuestion() {
+                @Override
+                public void manager(Question question) {
+                    View viewRootQuestion1 = question.getView(MainActivity.this);
+                    if (viewRootQuestion1 != null) {
+                        ( (TextView) viewRootQuestion1.findViewById(R.id.title_question_1))
+                                .setText(question.getQuestionText());
+                    }
+                }
+            }
+            ,"Questao 1"
+            , R.layout.layout_question_1
+        );
 
-        Question<Boolean> question1 = new SingleQuestion<>("Questao 1", R.layout.layout_question_1);
-        Question<String> question2  = new SingleQuestion<>("Questao 2", R.layout.layout_question_2);
+
+        Question<String> question2  = new SingleQuestion<>(
+            new ManagerLayoutQuestion() {
+                @Override
+                public void manager(Question question) {
+                    View viewRootQuestion1 = question.getView(MainActivity.this);
+                    if (viewRootQuestion1 != null) {
+                        ( (TextView) viewRootQuestion1.findViewById(R.id.title_question_2))
+                                .setText(question.getQuestionText());
+                    }
+                }
+            }
+            ,"Questao 2"
+            , R.layout.layout_question_2
+        );
 
         List<Option<City>> options = new ArrayList<>();
         Option<City> option = new Option<>(new City(1, "Itaquaquecetuba"), "Itaquaquecetuba");
@@ -34,7 +65,17 @@ public class MainActivity extends AppCompatActivity {
         option = new Option<>(new City(3, "Ferraz de Vasconcelos"), "Ferraz de Vasconcelos");
         options.add(option);
 
-        Question<City> question3 = new MultipleQuestion<>("Questao 3", R.layout.layout_question_3, options);
+        Question<City> question3 = new MultipleQuestion<>(
+                new ManagerLayoutQuestion() {
+                    @Override
+                    public void manager(Question question) {
+
+                    }
+                }
+                , "Questao 3"
+                , R.layout.layout_question_3
+                , options
+        );
 
 
         questions.add(question1);

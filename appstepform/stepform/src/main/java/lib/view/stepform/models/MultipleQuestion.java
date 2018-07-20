@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes;
 
 import java.util.List;
 
+import lib.view.stepform.models.action.ManagerLayoutQuestion;
 import lib.view.stepform.models.options.Option;
 
 public class MultipleQuestion<T> extends Question<T> {
@@ -14,18 +15,19 @@ public class MultipleQuestion<T> extends Question<T> {
     private MultipleAnswer<T> multipleAnswer;
     private List<Option<T>> options;
 
-    public MultipleQuestion() {
+    public MultipleQuestion(ManagerLayoutQuestion managerLayoutQuestion, String questionText
+            , @LayoutRes int layoutResource, List<Option<T>> options) {
+        super(managerLayoutQuestion, questionText, layoutResource);
+        this.options = options;
+    }
+
+    private MultipleQuestion() {
         super("", 0);
     }
 
     private MultipleQuestion(Parcel reader) {
         this();
         readerParcel(reader);
-    }
-
-    public MultipleQuestion(String questionText, @LayoutRes int layoutResource, List<Option<T>> options) {
-        super(questionText, layoutResource);
-        this.options = options;
     }
 
     @Override

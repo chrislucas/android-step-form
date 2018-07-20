@@ -5,6 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 
+import lib.view.stepform.models.action.ManagerLayoutQuestion;
+
 public class SingleQuestion<T> extends Question<T> {
 
     private SingleAnswer<T> singleAnswer;
@@ -18,8 +20,8 @@ public class SingleQuestion<T> extends Question<T> {
         readerParcel(reader);
     }
 
-    public SingleQuestion(String questionText, @LayoutRes int layoutRes) {
-        super(questionText, layoutRes);
+    public SingleQuestion(ManagerLayoutQuestion managerLayoutQuestion, String questionText, @LayoutRes int layoutRes) {
+        super(managerLayoutQuestion, questionText, layoutRes);
     }
 
     @Override

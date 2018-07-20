@@ -1,9 +1,14 @@
 package lib.view.stepform.models;
 
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import java.util.Locale;
+
+import lib.view.stepform.models.action.ManagerLayoutQuestion;
 
 
 /**
@@ -23,9 +28,17 @@ public abstract class Question<T> implements Parcelable {
     @LayoutRes
     protected final int layoutResource;
 
+    private ManagerLayoutQuestion managerLayoutQuestion;
+
     public Question(String questionText, @LayoutRes int layoutResource) {
         this.questionText = questionText;
         this.layoutResource = layoutResource;
+    }
+
+    public Question(ManagerLayoutQuestion managerLayoutQuestion, String questionText, @LayoutRes int layoutResource) {
+        this(questionText, layoutResource);
+        this.managerLayoutQuestion = managerLayoutQuestion;
+        this.managerLayoutQuestion.manager(this);
     }
 
     public String getQuestionText() {
@@ -44,12 +57,17 @@ public abstract class Question<T> implements Parcelable {
         return layoutResource;
     }
 
+
+    public View getView(Context context) {
+        return LayoutInflater.from(context).inflate(layoutResource, null, false);
+    }
+
     @Override
     public String toString() {
         return String.format(Locale.getDefault()
                 , "Question: %s.\nAnswer: %s\nAnswer: %s"
                 , questionText
-                , answer.toString()
+                , answer == null ? "Undefined" : answer.toString()
                 , isCorrect() ? "Correct" : "Incorrect"
         );
     }

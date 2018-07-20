@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">stepform</string>
+    <string name="label_confirm">Confirmar</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
 </resources>
