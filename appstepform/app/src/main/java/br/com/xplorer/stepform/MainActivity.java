@@ -69,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 new ManagerLayoutQuestion() {
                     @Override
                     public void manager(Question question) {
-
+                        MultipleQuestion<City> multipleQuestion = (MultipleQuestion<City>) question;
+                        for(Option<City> option: multipleQuestion.getOptions()) {
+                            
+                        }
                     }
                 }
                 , "Questao 3"
