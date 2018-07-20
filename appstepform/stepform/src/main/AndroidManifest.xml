@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="lib.view.stepform">
+
+    <application>
+        <activity android:name=".views.activity.ActivitySurvey"></activity>
+    </application>
+
+</manifest>
