@@ -2,7 +2,9 @@ package lib.view.stepform.models;
 
 
 
-import lib.view.stepform.models.action.ValidationAnswer;
+import android.os.Parcelable;
+
+import lib.view.stepform.action.ValidationAnswer;
 
 
 /**
@@ -16,19 +18,6 @@ import lib.view.stepform.models.action.ValidationAnswer;
  *
  * */
 
-public abstract class Answer<T> {
-
-    protected ValidationAnswer<T> validation;
-
+public abstract class Answer<T> implements Parcelable {
     public Answer() {}
-
-    public Answer(ValidationAnswer<T> validation) {
-        this.validation = validation;
-    }
-
-    public ValidationAnswer<T> getValidation() {
-        return validation;
-    }
-
-    protected abstract boolean validate();
 }

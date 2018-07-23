@@ -1,12 +1,12 @@
 package br.com.xplorer.stepform.question.manager;
 
 import lib.view.stepform.models.Question;
-import lib.view.stepform.models.action.ManagerLayoutQuestion;
+import lib.view.stepform.action.ManagerLayoutQuestion;
 
 public class ManagerQuestion implements ManagerLayoutQuestion {
 
     @Override
-    public void manager(Question question) {
+    public void bindLayoutWithQuestion(Question question) {
 
     }
 }

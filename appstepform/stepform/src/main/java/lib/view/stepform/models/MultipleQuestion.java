@@ -5,24 +5,25 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lib.view.stepform.models.action.ManagerLayoutQuestion;
+import lib.view.stepform.action.ManagerLayoutQuestion;
+import lib.view.stepform.action.ValidationAnswer;
 import lib.view.stepform.models.options.Option;
 
 public class MultipleQuestion<T> extends Question<T> {
 
     private MultipleAnswer<T> multipleAnswer;
-    private List<Option<T>> options;
 
-    public MultipleQuestion(ManagerLayoutQuestion managerLayoutQuestion, String questionText
+    public MultipleQuestion(ManagerLayoutQuestion managerLayoutQuestion, ValidationAnswer<T> validationAnswer, String questionText
             , @LayoutRes int layoutResource, List<Option<T>> options) {
-        super(managerLayoutQuestion, questionText, layoutResource);
+        super(managerLayoutQuestion, validationAnswer, questionText, layoutResource);
         this.options = options;
     }
 
     private MultipleQuestion() {
-        super("", 0);
+        options = new ArrayList<>();
     }
 
     private MultipleQuestion(Parcel reader) {
@@ -51,23 +52,30 @@ public class MultipleQuestion<T> extends Question<T> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeList(options);
+        dest.writeValue(multipleAnswer);
     }
 
     private void readerParcel(Parcel reader) {
-
+        reader.readList(options, Option.class.getClassLoader());
+        multipleAnswer = (MultipleAnswer<T>) reader.readValue(MultipleAnswer.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<MultipleQuestion> CREATOR =
-            new Parcelable.Creator<MultipleQuestion>()  {
+    public static final Creator<MultipleQuestion<?>> CREATOR =
+            new Parcelable.Creator<MultipleQuestion<?>>()  {
         @Override
-        public MultipleQuestion createFromParcel(Parcel source) {
+        public MultipleQuestion<?> createFromParcel(Parcel source) {
             return new MultipleQuestion(source);
         }
 
         @Override
-        public MultipleQuestion[] newArray(int size) {
+        public MultipleQuestion<?>[] newArray(int size) {
             return new MultipleQuestion[size];
         }
     };
+
+    @Override
+    protected boolean validate() {
+        return false;
+    }
 }

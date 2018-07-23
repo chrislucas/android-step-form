@@ -3,8 +3,6 @@ package lib.view.stepform.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import lib.view.stepform.models.action.ValidationAnswer;
-
 
 /**
  * Essa classe representa uma resposta de uma pergunta no questionario.
@@ -16,25 +14,17 @@ import lib.view.stepform.models.action.ValidationAnswer;
 
 public class SingleAnswer<T> extends Answer<T> implements Parcelable {
 
-    private T data;
+    private T answer;
 
-    public SingleAnswer(ValidationAnswer<T> validation) {
-        super(validation);
+    public T getAnswer() {
+        return answer;
     }
 
-    public T getData() {
-        return data;
+    public void setAnswer(T answer) {
+        this.answer = answer;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    protected boolean validate() {
-        return validation.validate(this);
-    }
-
+    public SingleAnswer() {}
 
     @Override
     public int describeContents() {
@@ -43,11 +33,11 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel writer, int flags) {
-
+        writer.writeValue(answer);
     }
 
     private void readerParcel(Parcel reader) {
-
+        answer = (T) reader.readValue(Object.class.getClassLoader());
     }
 
     private SingleAnswer(Parcel parcel) {
@@ -55,14 +45,14 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
     }
 
 
-    public static final Parcelable.Creator<SingleAnswer> CREATOR = new Parcelable.Creator<SingleAnswer>() {
+    public static final Parcelable.Creator<SingleAnswer<?>> CREATOR = new Parcelable.Creator<SingleAnswer<?>>() {
         @Override
-        public SingleAnswer createFromParcel(Parcel source) {
+        public SingleAnswer<?> createFromParcel(Parcel source) {
             return new SingleAnswer(source);
         }
 
         @Override
-        public SingleAnswer[] newArray(int size) {
+        public SingleAnswer<?>[] newArray(int size) {
             return new SingleAnswer[size];
         }
     };

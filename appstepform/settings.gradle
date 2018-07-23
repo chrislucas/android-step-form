@@ -1,1 +1,1 @@
-include ':app', ':stepform'
+include ':app', ':stepform', ':actionviewpager'

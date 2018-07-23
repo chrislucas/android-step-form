@@ -5,27 +5,36 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 
-import lib.view.stepform.models.action.ManagerLayoutQuestion;
+import java.util.List;
+
+import lib.view.stepform.action.ManagerLayoutQuestion;
+import lib.view.stepform.action.ValidationAnswer;
+import lib.view.stepform.models.options.Option;
 
 public class SingleQuestion<T> extends Question<T> {
 
     private SingleAnswer<T> singleAnswer;
 
-    private SingleQuestion() {
-        super("", 0);
-    }
+    private SingleQuestion() {}
 
     private SingleQuestion(Parcel reader) {
-        this();
         readerParcel(reader);
     }
 
-    public SingleQuestion(ManagerLayoutQuestion managerLayoutQuestion, String questionText, @LayoutRes int layoutRes) {
-        super(managerLayoutQuestion, questionText, layoutRes);
+    public SingleQuestion(ManagerLayoutQuestion managerLayoutQuestion
+            , ValidationAnswer<T> validationAnswer,  String questionText, @LayoutRes int layoutRes) {
+        super(managerLayoutQuestion, validationAnswer, questionText, layoutRes);
+    }
+
+
+    public SingleQuestion(ManagerLayoutQuestion managerLayoutQuestion
+            , ValidationAnswer<T> validationAnswer, String questionText, @LayoutRes int layoutRes, List<Option<T>> options) {
+        super(managerLayoutQuestion, validationAnswer, questionText, layoutRes);
+        this.options = options;
     }
 
     @Override
-    public Answer getAnswer() {
+    public Answer<T> getAnswer() {
         return singleAnswer;
     }
 
@@ -41,10 +50,12 @@ public class SingleQuestion<T> extends Question<T> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeValue(singleAnswer);
+        dest.writeList(options);
     }
 
-    private void readerParcel(Parcel parcel) {
+    private void readerParcel(Parcel reader) {
+        reader.readValue(SingleAnswer.class.getClassLoader());
 
     }
 
@@ -59,4 +70,9 @@ public class SingleQuestion<T> extends Question<T> {
             return new SingleQuestion[size];
         }
     };
+
+    @Override
+    protected boolean validate() {
+        return validation.validate(answer);
+    }
 }

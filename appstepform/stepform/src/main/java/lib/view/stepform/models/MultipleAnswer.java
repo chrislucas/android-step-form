@@ -4,34 +4,37 @@ package lib.view.stepform.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lib.view.stepform.models.action.ValidationAnswer;
 import lib.view.stepform.models.options.Option;
 
 
 public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
 
-    private List<Option<T>> data;
+    private List<Option<T>> optionsToChoose;
 
-    public MultipleAnswer(ValidationAnswer<T> validation) {
-        super(validation);
+    private T selectedOption;
+
+    public MultipleAnswer() {
+        optionsToChoose = new ArrayList<>();
     }
 
-    public List<Option<T>> getData() {
-        return data;
+    public List<Option<T>> getOptionsToChoose() {
+        return optionsToChoose;
     }
 
-    public void setData(List<Option<T>> data) {
-        this.data = data;
+    public void setOptionsToChoose(List<Option<T>> optionsToChoose) {
+        this.optionsToChoose = optionsToChoose;
     }
 
-    @Override
-    protected boolean validate() {
-        return validation.validate(this);
+    public T getSelectedOption() {
+        return selectedOption;
     }
 
-    public MultipleAnswer() {}
+    public void setSelectedOption(T selectedOption) {
+        this.selectedOption = selectedOption;
+    }
 
     private MultipleAnswer(Parcel parcel) {
         readerParcel(parcel);
@@ -43,19 +46,22 @@ public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
+    public void writeToParcel(Parcel writer, int flags) {
+        writer.writeList(optionsToChoose);
+        writer.writeValue(selectedOption);
     }
 
     private void readerParcel(Parcel reader) {
-
+        reader.readList(optionsToChoose, Option.class.getClassLoader());
+        selectedOption = (T) reader.readValue(Object.class.getClassLoader());
     }
 
 
-    public static Parcelable.Creator<MultipleAnswer> CREATOR = new Parcelable.Creator<MultipleAnswer>() {
+    public static Creator<MultipleAnswer<?>> CREATOR = new Creator<MultipleAnswer<?>>() {
+
         @Override
         public MultipleAnswer createFromParcel(Parcel source) {
-            return new MultipleAnswer(source);
+            return new MultipleAnswer<>(source);
         }
 
         @Override
