@@ -44,6 +44,7 @@ public class FragmentSurvey extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -85,9 +86,7 @@ public class FragmentSurvey extends Fragment {
             }
 
         }));
-
         mViewPager.addOnPageChangeListener(mPageChangeListener);
-
         return view;
     }
 

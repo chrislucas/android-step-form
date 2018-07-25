@@ -18,8 +18,7 @@ public class MultipleQuestion<T> extends Question<T> {
 
     public MultipleQuestion(ManagerLayoutQuestion managerLayoutQuestion, ValidationAnswer<T> validationAnswer, String questionText
             , @LayoutRes int layoutResource, List<Option<T>> options) {
-        super(managerLayoutQuestion, validationAnswer, questionText, layoutResource);
-        this.options = options;
+        super(managerLayoutQuestion, validationAnswer, questionText, layoutResource, options);
     }
 
     private MultipleQuestion() {
@@ -54,11 +53,15 @@ public class MultipleQuestion<T> extends Question<T> {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(options);
         dest.writeValue(multipleAnswer);
+        dest.writeString(questionText);
+        dest.writeInt(layoutResource);
     }
 
     private void readerParcel(Parcel reader) {
         reader.readList(options, Option.class.getClassLoader());
         multipleAnswer = (MultipleAnswer<T>) reader.readValue(MultipleAnswer.class.getClassLoader());
+        questionText = reader.readString();
+        layoutResource = reader.readInt();
     }
 
     public static final Creator<MultipleQuestion<?>> CREATOR =
@@ -76,6 +79,6 @@ public class MultipleQuestion<T> extends Question<T> {
 
     @Override
     protected boolean validate() {
-        return false;
+        return validation != null && validation.validate(answer);
     }
 }

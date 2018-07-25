@@ -786,7 +786,7 @@ int layout abc_search_view 0x7f0f0019
 int layout abc_select_dialog_material 0x7f0f001a
 int layout abc_tooltip 0x7f0f001b
 int layout activity_survey 0x7f0f001c
-int layout custom_layout_adapter_spinner 0x7f0f001d
+int layout custom_layout_dropdown_item 0x7f0f001d
 int layout custom_text_item_spinner 0x7f0f001e
 int layout fragment_question 0x7f0f001f
 int layout fragment_survey 0x7f0f0020

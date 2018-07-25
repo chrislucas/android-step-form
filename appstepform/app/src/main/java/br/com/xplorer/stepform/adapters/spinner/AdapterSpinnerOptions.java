@@ -19,10 +19,24 @@ public class AdapterSpinnerOptions<T> extends ArrayAdapter<Option<T>> {
 
     List<Option<T>> options;
 
-    public AdapterSpinnerOptions(@NonNull Context context, @LayoutRes int resource
-            , @NonNull List<Option<T>> options) {
-        super(context, resource, options);
+    /**
+     * @param context
+     * @param options
+     *
+     * layout do spinner quando esta fechado
+     * @param spinnerLayout
+     * layout do spinner aberto
+     * @param dropDownViewLayout
+     * */
+
+    @LayoutRes
+    private int dropDownViewLayout;
+
+    public AdapterSpinnerOptions(@NonNull Context context
+            , @LayoutRes int spinnerLayout, @NonNull List<Option<T>> options, @LayoutRes int dropDownViewLayout) {
+        super(context, spinnerLayout, options);
         this.options = options;
+        this.dropDownViewLayout = dropDownViewLayout;
     }
 
     @Nullable
@@ -46,8 +60,7 @@ public class AdapterSpinnerOptions<T> extends ArrayAdapter<Option<T>> {
 
     private View getCustomView(ViewGroup parent, int position) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.custom_layout_simple_adapter_spinner
-                , parent, false);
+                .inflate(dropDownViewLayout, parent, false);
         if (view != null) {
             Option<T> option = options.get(position);
             ((TextView) view).setText(option.getDescription());

@@ -811,7 +811,7 @@ public final class R {
         public static int abc_select_dialog_material = 0x7f0f001a;
         public static int abc_tooltip = 0x7f0f001b;
         public static int activity_survey = 0x7f0f001c;
-        public static int custom_layout_adapter_spinner = 0x7f0f001d;
+        public static int custom_layout_dropdown_item = 0x7f0f001d;
         public static int custom_text_item_spinner = 0x7f0f001e;
         public static int fragment_question = 0x7f0f001f;
         public static int fragment_survey = 0x7f0f0020;

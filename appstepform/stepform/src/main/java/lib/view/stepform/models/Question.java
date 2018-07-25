@@ -1,6 +1,7 @@
 package lib.view.stepform.models;
 
 import android.content.Context;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
@@ -26,15 +27,15 @@ import lib.view.stepform.models.options.Option;
 public abstract class Question<T> implements Parcelable {
 
     // Resposta
-    protected Answer<T> answer;
+    public Answer<T> answer;
     // Texto da pergunta
-    protected String questionText;
+    public String questionText;
 
     // Comportamento de validacao da pergunta
-    protected ValidationAnswer<T> validation;
+    public ValidationAnswer<T> validation;
 
     // Possivel lista de opcoes casp a pergunta for objetiva
-    protected List<Option<T>> options;
+    public List<Option<T>> options;
 
     protected Question() { }
 
@@ -56,8 +57,12 @@ public abstract class Question<T> implements Parcelable {
 
     public Question(ManagerLayoutQuestion managerLayoutQuestion
             , ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource, List<Option<T>> options) {
-        this(managerLayoutQuestion, validation, questionText, layoutResource);
+        this.questionText = questionText;
+        this.layoutResource = layoutResource;
+        this.managerLayoutQuestion = managerLayoutQuestion;
+        this.validation = validation;
         this.options = options;
+        this.managerLayoutQuestion.bindLayoutWithQuestion(this);
     }
 
     public String getQuestionText() {
@@ -91,13 +96,11 @@ public abstract class Question<T> implements Parcelable {
     public List<Option<T>> getOptions() {
         return options;
     }
-
     @Override
     public String toString() {
         return String.format(Locale.getDefault()
-                , "Question: %s.\nAnswer: %s\nAnswer: %s"
+                , "Question: %s.\nAnswer: %s"
                 , questionText
-                , answer == null ? "Undefined" : answer.toString()
                 , isCorrect() ? "Correct" : "Incorrect"
         );
     }

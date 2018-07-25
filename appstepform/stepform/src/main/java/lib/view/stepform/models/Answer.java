@@ -20,4 +20,6 @@ import lib.view.stepform.action.ValidationAnswer;
 
 public abstract class Answer<T> implements Parcelable {
     public Answer() {}
+
+
 }

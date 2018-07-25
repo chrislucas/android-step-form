@@ -22,7 +22,7 @@ public class ActivitySurvey extends AppCompatActivity {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                Survey survey= bundle.getParcelable(BUNDLE_SURVEY);
+                Survey survey = bundle.getParcelable(BUNDLE_SURVEY);
                 if (survey != null)
                     loadFragment(survey);
             }

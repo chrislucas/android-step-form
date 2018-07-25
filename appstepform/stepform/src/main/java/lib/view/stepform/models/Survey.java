@@ -56,6 +56,8 @@ public class Survey implements Parcelable {
     }
 
     private void readerParcel(Parcel reader) {
+        if (questions == null)
+            questions = new ArrayList<>();
         reader.readList(questions, Question.class.getClassLoader());
     }
 

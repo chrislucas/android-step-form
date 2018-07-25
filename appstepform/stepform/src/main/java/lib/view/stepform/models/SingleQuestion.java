@@ -26,11 +26,9 @@ public class SingleQuestion<T> extends Question<T> {
         super(managerLayoutQuestion, validationAnswer, questionText, layoutRes);
     }
 
-
     public SingleQuestion(ManagerLayoutQuestion managerLayoutQuestion
             , ValidationAnswer<T> validationAnswer, String questionText, @LayoutRes int layoutRes, List<Option<T>> options) {
-        super(managerLayoutQuestion, validationAnswer, questionText, layoutRes);
-        this.options = options;
+        super(managerLayoutQuestion, validationAnswer, questionText, layoutRes, options);
     }
 
     @Override
@@ -51,12 +49,14 @@ public class SingleQuestion<T> extends Question<T> {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(singleAnswer);
-        dest.writeList(options);
+        dest.writeString(questionText);
+        dest.writeInt(layoutResource);
     }
 
     private void readerParcel(Parcel reader) {
-        reader.readValue(SingleAnswer.class.getClassLoader());
-
+        singleAnswer = (SingleAnswer<T>) reader.readValue(SingleAnswer.class.getClassLoader());
+        questionText = reader.readString();
+        layoutResource = reader.readInt();
     }
 
     public static final Parcelable.Creator<SingleQuestion> CREATOR = new Parcelable.Creator<SingleQuestion>() {
@@ -73,6 +73,6 @@ public class SingleQuestion<T> extends Question<T> {
 
     @Override
     protected boolean validate() {
-        return validation.validate(answer);
+        return validation != null && validation.validate(answer);
     }
 }
