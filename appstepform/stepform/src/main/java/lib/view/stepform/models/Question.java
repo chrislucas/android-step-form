@@ -24,7 +24,7 @@ import lib.view.stepform.models.options.Option;
  *
  * */
 
-public abstract class Question<T> implements Parcelable {
+public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion {
 
     // Resposta
     public Answer<T> answer;
@@ -44,25 +44,21 @@ public abstract class Question<T> implements Parcelable {
     @LayoutRes
     protected int layoutResource;
 
-    protected ManagerLayoutQuestion managerLayoutQuestion;
 
-    public Question(ManagerLayoutQuestion managerLayoutQuestion
-            , ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource) {
+    protected View viewRoot;
+
+
+    public Question(ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource) {
         this.questionText = questionText;
         this.layoutResource = layoutResource;
-        this.managerLayoutQuestion = managerLayoutQuestion;
         this.validation = validation;
-        this.managerLayoutQuestion.bindLayoutWithQuestion(this);
     }
 
-    public Question(ManagerLayoutQuestion managerLayoutQuestion
-            , ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource, List<Option<T>> options) {
+    public Question(ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource, List<Option<T>> options) {
         this.questionText = questionText;
         this.layoutResource = layoutResource;
-        this.managerLayoutQuestion = managerLayoutQuestion;
         this.validation = validation;
         this.options = options;
-        this.managerLayoutQuestion.bindLayoutWithQuestion(this);
     }
 
     public String getQuestionText() {
@@ -85,12 +81,13 @@ public abstract class Question<T> implements Parcelable {
         return validation;
     }
 
-    public ManagerLayoutQuestion getManagerLayoutQuestion() {
-        return managerLayoutQuestion;
+    public Question inflate(Context context) {
+        this.viewRoot = LayoutInflater.from(context).inflate(layoutResource, null, false);
+        return this;
     }
 
-    public View getView(Context context) {
-        return LayoutInflater.from(context).inflate(layoutResource, null, false);
+    public View getViewRoot() {
+        return viewRoot;
     }
 
     public List<Option<T>> getOptions() {

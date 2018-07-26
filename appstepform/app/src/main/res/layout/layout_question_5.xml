@@ -4,14 +4,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/title_question_3"
+    <LinearLayout
+        android:id="@+id/wrapper_group_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <Spinner
-        android:id="@+id/cities_options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:orientation="vertical">
+
+    </LinearLayout>
 </LinearLayout>

@@ -3,6 +3,7 @@ package lib.view.stepform.views.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTitleStrip;
@@ -31,6 +32,9 @@ public class FragmentSurvey extends Fragment {
     private PagerTitleStrip mPagerTitleStrip;
     private ViewPager.PageTransformer mPageTransformer;
     private ViewPager.OnPageChangeListener mPageChangeListener;
+
+
+    private static final String BUNDLE_SURVEY = "BUNDLE_SURVEY";
 
     public FragmentSurvey() {}
 
@@ -62,11 +66,9 @@ public class FragmentSurvey extends Fragment {
         mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager(), survey.getQuestions());
         mViewPager.setAdapter(mPagerAdapter);
 
-        mPageChangeListener = new DefaultOnPageListener(new DefaultCallbackPageChange(new QuestionCallback() {
+        QuestionCallback  questionCallback = new QuestionCallback() {
             @Override
-            public void onStart() {
-
-            }
+            public void onStart() {}
 
             @Override
             public void whenPassing(int nQuestion) {
@@ -84,10 +86,24 @@ public class FragmentSurvey extends Fragment {
             public void atTheEnd() {
 
             }
-
-        }));
+        };
+        mPageChangeListener = new DefaultOnPageListener(new DefaultCallbackPageChange(questionCallback));
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_SURVEY, survey);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            survey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
+        }
     }
 
     @Override

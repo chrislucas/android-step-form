@@ -5,6 +5,6 @@ import android.os.Parcelable;
 
 import lib.view.stepform.models.Question;
 
-public interface ManagerLayoutQuestion extends Parcelable {
-    void bindLayoutWithQuestion(Question question);
+public interface ManagerLayoutQuestion<T> extends Parcelable {
+    void bindLayoutWithQuestion();
 }

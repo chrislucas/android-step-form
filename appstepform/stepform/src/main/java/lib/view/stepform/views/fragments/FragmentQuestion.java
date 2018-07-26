@@ -3,6 +3,7 @@ package lib.view.stepform.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import lib.view.stepform.models.Question;
 public class FragmentQuestion extends Fragment {
 
     private Question question;
+
+    private static final String BUNDLE_QUESTION = "BUNDLE_QUESTION";
 
     public FragmentQuestion() {
         // Required empty public constructor
@@ -44,8 +47,33 @@ public class FragmentQuestion extends Fragment {
         // Inflate the layout for this fragment
         View viewRoot = inflater.inflate(R.layout.fragment_question, container, false);
         LinearLayout linearLayout = viewRoot.findViewById(R.id.wrapper_layout_question);
-        linearLayout.addView(question.getView(getContext()));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout
+                .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        question.inflate(getContext()).bindLayoutWithQuestion();
+        View viewQuestion = question.getViewRoot();
+        viewQuestion.setLayoutParams(layoutParams);
+
+        linearLayout.addView(viewQuestion);
         return viewRoot;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_QUESTION, question);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            question = savedInstanceState.getParcelable(BUNDLE_QUESTION);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

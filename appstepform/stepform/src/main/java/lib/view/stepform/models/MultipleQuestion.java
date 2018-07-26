@@ -12,22 +12,21 @@ import lib.view.stepform.action.ManagerLayoutQuestion;
 import lib.view.stepform.action.ValidationAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class MultipleQuestion<T> extends Question<T> {
+public abstract class MultipleQuestion<T> extends Question<T> {
 
-    private MultipleAnswer<T> multipleAnswer;
+    public MultipleAnswer<T> multipleAnswer;
 
-    public MultipleQuestion(ManagerLayoutQuestion managerLayoutQuestion, ValidationAnswer<T> validationAnswer, String questionText
+    public MultipleQuestion(ValidationAnswer<T> validationAnswer, String questionText
             , @LayoutRes int layoutResource, List<Option<T>> options) {
-        super(managerLayoutQuestion, validationAnswer, questionText, layoutResource, options);
+        super(validationAnswer, questionText, layoutResource, options);
     }
 
-    private MultipleQuestion() {
+    public MultipleQuestion() {
         options = new ArrayList<>();
     }
 
     private MultipleQuestion(Parcel reader) {
         this();
-        readerParcel(reader);
     }
 
     @Override
@@ -42,43 +41,5 @@ public class MultipleQuestion<T> extends Question<T> {
 
     public List<Option<T>> getOptions() {
         return options;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeList(options);
-        dest.writeValue(multipleAnswer);
-        dest.writeString(questionText);
-        dest.writeInt(layoutResource);
-    }
-
-    private void readerParcel(Parcel reader) {
-        reader.readList(options, Option.class.getClassLoader());
-        multipleAnswer = (MultipleAnswer<T>) reader.readValue(MultipleAnswer.class.getClassLoader());
-        questionText = reader.readString();
-        layoutResource = reader.readInt();
-    }
-
-    public static final Creator<MultipleQuestion<?>> CREATOR =
-            new Parcelable.Creator<MultipleQuestion<?>>()  {
-        @Override
-        public MultipleQuestion<?> createFromParcel(Parcel source) {
-            return new MultipleQuestion(source);
-        }
-
-        @Override
-        public MultipleQuestion<?>[] newArray(int size) {
-            return new MultipleQuestion[size];
-        }
-    };
-
-    @Override
-    protected boolean validate() {
-        return validation != null && validation.validate(answer);
     }
 }
