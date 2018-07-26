@@ -43,13 +43,14 @@ public class Option<T> implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
+    public void writeToParcel(Parcel writer, int flags) {
+        writer.writeValue(data);
+        writer.writeString(description);
     }
 
-
     private void readerParcel(Parcel reader) {
-
+        //data = (T) (Object) reader.readValue(Object.class.getClassLoader());
+        description = reader.readString();
     }
 
 
