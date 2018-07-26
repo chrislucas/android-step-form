@@ -49,12 +49,11 @@ public class Option<T> implements Parcelable {
     }
 
     private void readerParcel(Parcel reader) {
-        //data = (T) (Object) reader.readValue(Object.class.getClassLoader());
+        data = (T) reader.readValue(Object.class.getClassLoader());
         description = reader.readString();
     }
 
-
-    public static final Parcelable.Creator<Option> CREATOR = new Parcelable.Creator<Option>() {
+    public static final Creator<Option<?>> CREATOR = new Creator<Option<?>>() {
         @Override
         public Option createFromParcel(Parcel source) {
             return new Option(source);
