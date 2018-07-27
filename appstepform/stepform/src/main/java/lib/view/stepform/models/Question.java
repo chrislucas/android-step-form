@@ -1,7 +1,6 @@
 package lib.view.stepform.models;
 
 import android.content.Context;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import lib.view.stepform.action.ManagerLayoutQuestion;
-import lib.view.stepform.action.ValidationAnswer;
+import lib.view.stepform.action.ValidationQuestion;
 import lib.view.stepform.models.options.Option;
 
 
@@ -24,45 +23,44 @@ import lib.view.stepform.models.options.Option;
  *
  * */
 
-public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion {
+public abstract class Question<T> implements Parcelable
+        , ManagerLayoutQuestion<T>, ValidationQuestion<T> {
 
     // Resposta
     public Answer<T> answer;
     // Texto da pergunta
-    public String questionText;
-
-    // Comportamento de validacao da pergunta
-    public ValidationAnswer<T> validation;
+    public String text, title;
 
     // Possivel lista de opcoes casp a pergunta for objetiva
     public List<Option<T>> options;
 
     protected Question() { }
 
-    protected abstract boolean validate();
-
     @LayoutRes
     protected int layoutResource;
 
-
     protected View viewRoot;
 
-
-    public Question(ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource) {
-        this.questionText = questionText;
+    public Question(String title, String text, @LayoutRes int layoutResource) {
+        this.text = text;
+        this.title = title;
         this.layoutResource = layoutResource;
-        this.validation = validation;
     }
 
-    public Question(ValidationAnswer<T> validation, String questionText, @LayoutRes int layoutResource, List<Option<T>> options) {
-        this.questionText = questionText;
+    public Question(String title, String text, @LayoutRes int layoutResource, List<Option<T>> options) {
+        this.text = text;
+        this.title = title;
+
         this.layoutResource = layoutResource;
-        this.validation = validation;
         this.options = options;
     }
 
-    public String getQuestionText() {
-        return questionText;
+    public String getText() {
+        return text;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public abstract Answer<T> getAnswer();
@@ -70,15 +68,11 @@ public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion {
     public abstract void setAnswer(Answer<T> answer);
 
     public boolean isCorrect() {
-        return validate();
+        return true;
     }
 
     public int getLayoutResource() {
         return layoutResource;
-    }
-
-    public ValidationAnswer<T> getValidation() {
-        return validation;
     }
 
     public Question inflate(Context context) {
@@ -97,7 +91,7 @@ public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion {
     public String toString() {
         return String.format(Locale.getDefault()
                 , "Question: %s.\nAnswer: %s"
-                , questionText
+                , text
                 , isCorrect() ? "Correct" : "Incorrect"
         );
     }

@@ -3,6 +3,7 @@ package lib.view.stepform.models.options;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Classe que representa uma opcao numa determinada questao com muitas opcoes.
@@ -12,9 +13,12 @@ public class Option<T> implements Parcelable {
     private T data;
     private String description;
 
+    private static ClassLoader mClassLoader;
+
     public Option(T data, String description) {
         this.data = data;
         this.description = description;
+        Option.mClassLoader = data.getClass().getClassLoader();
     }
 
     public T getData() {
@@ -49,8 +53,13 @@ public class Option<T> implements Parcelable {
     }
 
     private void readerParcel(Parcel reader) {
-        data = (T) reader.readValue(Object.class.getClassLoader());
-        description = reader.readString();
+        try {
+            this.data = (T) reader.readValue(Option.mClassLoader);
+        }
+        catch (Exception e) {
+            Log.e("CLS_CAST_EXCEPT_OPT_CLS", e.getMessage());
+        }
+        this.description = reader.readString();
     }
 
     public static final Creator<Option<?>> CREATOR = new Creator<Option<?>>() {

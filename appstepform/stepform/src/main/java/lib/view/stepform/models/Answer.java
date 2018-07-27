@@ -4,8 +4,6 @@ package lib.view.stepform.models;
 
 import android.os.Parcelable;
 
-import lib.view.stepform.action.ValidationAnswer;
-
 
 /**
  * Essa classe representa uma resposta de uma pergunta dentro do questionario.

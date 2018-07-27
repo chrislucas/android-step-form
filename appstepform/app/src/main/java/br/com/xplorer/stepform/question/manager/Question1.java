@@ -4,40 +4,63 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.com.xplorer.stepform.R;
-import lib.view.stepform.action.ValidationAnswer;
 import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.SingleQuestion;
 import lib.view.stepform.models.options.Option;
 
 public class Question1<T> extends SingleQuestion<T> {
 
-    private Context context;
+    private View viewRoot;
 
     private Question1(Parcel reader) {
         readerParcel(reader);
     }
 
-    public Question1(ValidationAnswer<T> validationAnswer, String questionText, int layoutRes, Context context) {
-        super(validationAnswer, questionText, layoutRes);
-        this.context = context;
+    public Question1(String title, String text, int layoutRes) {
+        super(title, text, layoutRes);
     }
 
-    public Question1(ValidationAnswer<T> validationAnswer, String questionText, int layoutRes, List<Option<T>> list, Context context) {
-        super(validationAnswer, questionText, layoutRes, list);
-        this.context = context;
+    public Question1(String title, String text, int layoutRes, List<Option<T>> list) {
+        super(title, text, layoutRes, list);
+    }
+
+    private View.OnClickListener getOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               validate();
+            }
+        };
+    }
+
+    private boolean confirm() {
+        EditText editText = viewRoot.findViewById(R.id.text_answer_question_1);
+        String data = editText.getText().toString();
+        if (data.isEmpty() || data.matches("\\s+")) {
+            editText.setError("Campo em branco.");
+            editText.requestFocus();
+            return false;
+        }
+        SingleAnswer<String> singleAnswer = new SingleAnswer<>();
+        singleAnswer.setAnswer(data);
+        this.setAnswer(singleAnswer);
+        return true;
     }
 
     @Override
-    public void bindLayoutWithQuestion() {
-        View viewRoot = getViewRoot();
+    public void bindLayoutWithQuestion(Context context) {
+        viewRoot = getViewRoot();
         if (viewRoot != null) {
             ( (TextView) viewRoot.findViewById(R.id.title_question_1))
-                    .setText(getQuestionText());
+                    .setText(getText());
+
+            viewRoot.findViewById(R.id.confirm).setOnClickListener(getOnClickListener());
         }
     }
 
@@ -49,13 +72,15 @@ public class Question1<T> extends SingleQuestion<T> {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(singleAnswer);
-        dest.writeString(questionText);
+        dest.writeString(text);
+        dest.writeString(title);
         dest.writeInt(layoutResource);
     }
 
     private void readerParcel(Parcel reader) {
         singleAnswer = (SingleAnswer<T>) reader.readValue(SingleAnswer.class.getClassLoader());
-        questionText = reader.readString();
+        text = reader.readString();
+        title = reader.readString();
         layoutResource = reader.readInt();
     }
 
@@ -70,4 +95,9 @@ public class Question1<T> extends SingleQuestion<T> {
             return new Question1[size];
         }
     };
+
+    @Override
+    public boolean validate() {
+        return confirm();
+    }
 }

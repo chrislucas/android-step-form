@@ -63,7 +63,7 @@ public class AdapterSpinnerOptions<T> extends ArrayAdapter<Option<T>> {
                 .inflate(dropDownViewLayout, parent, false);
         if (view != null) {
             Option<T> option = options.get(position);
-            ((TextView) view).setText(option.getDescription());
+            ((TextView) view.findViewById(R.id.text)).setText(option.getDescription());
         }
         return view;
     }

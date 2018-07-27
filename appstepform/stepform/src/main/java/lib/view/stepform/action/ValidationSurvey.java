@@ -1,8 +1,8 @@
 package lib.view.stepform.action;
 
 
-import lib.view.stepform.models.Survey;
+import lib.view.stepform.models.ModelSurvey;
 
 public interface ValidationSurvey {
-    boolean validate(Survey survey);
+    boolean validate(ModelSurvey modelSurvey);
 }

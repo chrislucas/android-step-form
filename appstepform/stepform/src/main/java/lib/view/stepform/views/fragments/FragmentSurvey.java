@@ -8,40 +8,32 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import lib.view.stepform.R;
-import lib.view.stepform.action.QuestionCallback;
-import lib.view.stepform.models.Question;
-import lib.view.stepform.models.Survey;
+import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.views.viewpager.adapter.DefaultStatePagerAdapter;
-import lib.view.stepform.views.viewpager.animation.ScaleViewPageTransformer;
-import lib.view.stepform.views.viewpager.callback.impl.DefaultCallbackPageChange;
-import lib.view.stepform.views.viewpager.listener.DefaultOnPageListener;
+import lib.view.stepform.views.viewpager.listener.DefaultOnPageChangeListener;
 
 public class FragmentSurvey extends Fragment {
 
-
-    private Survey survey;
+    private ModelSurvey modelSurvey;
 
     private ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private PagerTitleStrip mPagerTitleStrip;
-    private ViewPager.PageTransformer mPageTransformer;
     private ViewPager.OnPageChangeListener mPageChangeListener;
-
 
     private static final String BUNDLE_SURVEY = "BUNDLE_SURVEY";
 
     public FragmentSurvey() {}
 
     // TODO: Rename and change types and number of parameters
-    public static FragmentSurvey newInstance(Survey survey) {
+    public static FragmentSurvey newInstance(ModelSurvey modelSurvey) {
         FragmentSurvey fragment = new FragmentSurvey();
-        fragment.survey = survey;
+        fragment.modelSurvey = modelSurvey;
         return fragment;
     }
 
@@ -50,6 +42,7 @@ public class FragmentSurvey extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -60,34 +53,14 @@ public class FragmentSurvey extends Fragment {
         mViewPager = view.findViewById(R.id.view_pager);
         mPagerTitleStrip = view.findViewById(R.id.title);
 
-        mPageTransformer = new ScaleViewPageTransformer();
 
-        mViewPager.setPageTransformer(true, mPageTransformer);
-        mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager(), survey.getQuestions());
+
+        mViewPager.setPageTransformer(true, modelSurvey.pageTransformer());
+
+        mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager(), modelSurvey.getQuestions());
         mViewPager.setAdapter(mPagerAdapter);
 
-        QuestionCallback  questionCallback = new QuestionCallback() {
-            @Override
-            public void onStart() {}
-
-            @Override
-            public void whenPassing(int nQuestion) {
-                Question question = survey.getQuestions().get(nQuestion);
-                Log.i("WHEN_PASSING", question.toString());
-            }
-
-            @Override
-            public void whenSelecting(int nQuestion) {
-                Question question = survey.getQuestions().get(nQuestion);
-                Log.i("WHEN_SELECTING", question.toString());
-            }
-
-            @Override
-            public void atTheEnd() {
-
-            }
-        };
-        mPageChangeListener = new DefaultOnPageListener(new DefaultCallbackPageChange(questionCallback));
+        mPageChangeListener = new DefaultOnPageChangeListener(modelSurvey);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         return view;
     }
@@ -95,14 +68,14 @@ public class FragmentSurvey extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(BUNDLE_SURVEY, survey);
+        outState.putParcelable(BUNDLE_SURVEY, modelSurvey);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            survey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
+            modelSurvey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
         }
     }
 

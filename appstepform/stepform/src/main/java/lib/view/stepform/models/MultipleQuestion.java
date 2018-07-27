@@ -2,23 +2,21 @@ package lib.view.stepform.models;
 
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.view.stepform.action.ManagerLayoutQuestion;
-import lib.view.stepform.action.ValidationAnswer;
+import lib.view.stepform.action.ValidationQuestion;
 import lib.view.stepform.models.options.Option;
 
 public abstract class MultipleQuestion<T> extends Question<T> {
 
     public MultipleAnswer<T> multipleAnswer;
 
-    public MultipleQuestion(ValidationAnswer<T> validationAnswer, String questionText
+    public MultipleQuestion(String title, String text
             , @LayoutRes int layoutResource, List<Option<T>> options) {
-        super(validationAnswer, questionText, layoutResource, options);
+        super(title, text, layoutResource, options);
     }
 
     public MultipleQuestion() {

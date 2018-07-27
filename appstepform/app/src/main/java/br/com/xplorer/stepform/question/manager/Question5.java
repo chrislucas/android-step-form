@@ -7,7 +7,6 @@ import android.view.View;
 
 import java.util.List;
 
-import lib.view.stepform.action.ValidationAnswer;
 import lib.view.stepform.models.MultipleAnswer;
 import lib.view.stepform.models.MultipleQuestion;
 import lib.view.stepform.models.options.Option;
@@ -20,15 +19,17 @@ public class Question5<T> extends MultipleQuestion<T> {
         readerParcel(reader);
     }
 
-    public Question5(ValidationAnswer<T> validationAnswer
-            , String questionText, int layoutResource, List<Option<T>> options, Context context) {
-        super(validationAnswer, questionText, layoutResource, options);
+    public Question5(String title, String text, int layoutResource, List<Option<T>> options, Context context) {
+        super(title, text, layoutResource, options);
         this.context = context;
     }
 
     @Override
-    public void bindLayoutWithQuestion() {
+    public void bindLayoutWithQuestion(Context context) {
         View viewRoot = getViewRoot();
+        if (viewRoot != null) {
+
+        }
     }
 
     @Override
@@ -40,14 +41,14 @@ public class Question5<T> extends MultipleQuestion<T> {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(options);
         dest.writeValue(multipleAnswer);
-        dest.writeString(questionText);
+        dest.writeString(text);
         dest.writeInt(layoutResource);
     }
 
     private void readerParcel(Parcel reader) {
         reader.readList(options, Option.class.getClassLoader());
         multipleAnswer = (MultipleAnswer<T>) reader.readValue(MultipleAnswer.class.getClassLoader());
-        questionText = reader.readString();
+        text = reader.readString();
         layoutResource = reader.readInt();
     }
 
@@ -64,7 +65,7 @@ public class Question5<T> extends MultipleQuestion<T> {
     };
 
     @Override
-    protected boolean validate() {
-        return validation != null && validation.validate(answer);
+    public boolean validate() {
+        return false;
     }
 }

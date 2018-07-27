@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import lib.view.stepform.R;
-import lib.view.stepform.models.Survey;
+import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.views.fragments.FragmentSurvey;
 
 public class ActivitySurvey extends AppCompatActivity {
@@ -22,18 +22,18 @@ public class ActivitySurvey extends AppCompatActivity {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                Survey survey = bundle.getParcelable(BUNDLE_SURVEY);
-                if (survey != null)
-                    loadFragment(survey);
+                ModelSurvey modelSurvey = bundle.getParcelable(BUNDLE_SURVEY);
+                if (modelSurvey != null)
+                    loadFragment(modelSurvey);
             }
         }
     }
 
-    private <T> void loadFragment(Survey survey) {
+    private <T> void loadFragment(ModelSurvey modelSurvey) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm != null) {
             fm.beginTransaction()
-                    .replace(R.id.place_to_replace, FragmentSurvey.newInstance(survey))
+                    .replace(R.id.place_to_replace, FragmentSurvey.newInstance(modelSurvey))
                     .commit();
         }
     }

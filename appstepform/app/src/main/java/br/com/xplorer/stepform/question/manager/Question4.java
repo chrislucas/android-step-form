@@ -10,10 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.xplorer.stepform.R;
-import lib.view.stepform.action.ValidationAnswer;
 
 import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.SingleQuestion;
@@ -21,28 +21,24 @@ import lib.view.stepform.models.options.Option;
 
 public class Question4<T> extends SingleQuestion<T> {
 
-    private Context context;
-
     private Question4(Parcel reader) {
         readerParcel(reader);
     }
 
-    public Question4(ValidationAnswer<T> validationAnswer, String questionText, int layoutRes, Context context) {
-        super(validationAnswer, questionText, layoutRes);
-        this.context = context;
+    public Question4(String title, String text, int layoutRes) {
+        super(title, text, layoutRes);
     }
 
-    public Question4(ValidationAnswer<T> validationAnswer, String questionText, int layoutRes, List<Option<T>> options, Context context) {
-        super(validationAnswer, questionText, layoutRes, options);
-        this.context = context;
+    public Question4(String title, String text, int layoutRes, List<Option<T>> options) {
+        super(title, text, layoutRes, options);
     }
 
     @Override
-    public void bindLayoutWithQuestion() {
+    public void bindLayoutWithQuestion(final Context context) {
         View viewRoot = getViewRoot();
         if (viewRoot != null) {
             ((TextView) viewRoot.findViewById(R.id.title_question_4))
-                    .setText(getQuestionText());
+                    .setText(getText());
             RadioGroup radioGroup = viewRoot.findViewById(R.id.group_roles);
             int acc = 0;
             for (Option<T> op :getOptions()) {
@@ -66,15 +62,19 @@ public class Question4<T> extends SingleQuestion<T> {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(singleAnswer);
-        dest.writeString(questionText);
+        dest.writeString(text);
+        dest.writeString(title);
         dest.writeInt(layoutResource);
         dest.writeList(options);
     }
 
     private void readerParcel(Parcel reader) {
         singleAnswer = (SingleAnswer<T>) reader.readValue(SingleAnswer.class.getClassLoader());
-        questionText = reader.readString();
+        text = reader.readString();
+        title = reader.readString();
         layoutResource = reader.readInt();
+        if (options == null)
+            options = new ArrayList<>();
         reader.readList(options, Option.class.getClassLoader());
     }
 
@@ -90,4 +90,9 @@ public class Question4<T> extends SingleQuestion<T> {
         }
     };
 
+    @Override
+    public boolean validate() {
+
+        return false;
+    }
 }
