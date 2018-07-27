@@ -77,9 +77,7 @@ public class ModelSurvey implements Parcelable, QuestionCallback {
     };
 
     @Override
-    public void onStart() {
-
-    }
+    public void onStart() {}
 
     @Override
     public boolean validateWhenPassing(int nQuestion) {
@@ -96,7 +94,9 @@ public class ModelSurvey implements Parcelable, QuestionCallback {
 
     @Override
     public void atTheEnd() {
-
+        /**
+         * Fazer qualquer coisa. Enviar os dados para uma API, converte-los em JSON etc.
+         * */
     }
 
     public ViewPager.PageTransformer pageTransformer() {

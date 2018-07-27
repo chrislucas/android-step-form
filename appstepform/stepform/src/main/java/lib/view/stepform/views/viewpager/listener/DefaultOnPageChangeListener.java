@@ -9,6 +9,7 @@ import lib.view.stepform.views.viewpager.callback.CallbackPageChangeListener;
 public class DefaultOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
     private QuestionCallback callback;
+    private boolean validate = false;
 
     public DefaultOnPageChangeListener(QuestionCallback callback) {
         this.callback = callback;
@@ -16,7 +17,7 @@ public class DefaultOnPageChangeListener implements ViewPager.OnPageChangeListen
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        boolean validate = this.callback.validateWhenPassing(position);
+        //this.validate = this.callback.validateWhenPassing(position);
     }
 
     @Override

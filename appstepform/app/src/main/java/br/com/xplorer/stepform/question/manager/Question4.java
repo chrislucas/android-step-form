@@ -16,10 +16,10 @@ import java.util.List;
 import br.com.xplorer.stepform.R;
 
 import lib.view.stepform.models.SingleAnswer;
-import lib.view.stepform.models.SingleQuestion;
+import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question4<T> extends SingleQuestion<T> {
+public class Question4<T> extends QuestionWithSingleAnswer<T> {
 
     private Question4(Parcel reader) {
         readerParcel(reader);
@@ -41,13 +41,12 @@ public class Question4<T> extends SingleQuestion<T> {
                     .setText(getText());
             RadioGroup radioGroup = viewRoot.findViewById(R.id.group_roles);
             int acc = 0;
-            for (Option<T> op :getOptions()) {
+            for (Option<T> op : getOptions()) {
                 AppCompatRadioButton radioButton = new AppCompatRadioButton(context);
                 radioButton.setText(op.getDescription());
                 LinearLayout.LayoutParams layoutParams =
                         new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                                 , ViewGroup.LayoutParams.WRAP_CONTENT);
-
                 radioButton.setLayoutParams(layoutParams);
                 radioGroup.addView(radioButton, acc++);
             }

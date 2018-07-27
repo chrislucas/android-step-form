@@ -14,14 +14,14 @@ import android.os.Parcelable;
 
 public class SingleAnswer<T> extends Answer<T> implements Parcelable {
 
-    private T answer;
+    private T value;
 
-    public T getAnswer() {
-        return answer;
+    public T getValue() {
+        return value;
     }
 
-    public void setAnswer(T answer) {
-        this.answer = answer;
+    public void setValue(T value) {
+        this.value = value;
     }
 
     public SingleAnswer() {}
@@ -33,17 +33,16 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel writer, int flags) {
-        writer.writeValue(answer);
+        writer.writeValue(value);
     }
 
     private void readerParcel(Parcel reader) {
-        answer = (T) reader.readValue(Object.class.getClassLoader());
+        value = (T) reader.readValue(Object.class.getClassLoader());
     }
 
     private SingleAnswer(Parcel parcel) {
         readerParcel(parcel);
     }
-
 
     public static final Parcelable.Creator<SingleAnswer<?>> CREATOR = new Parcelable.Creator<SingleAnswer<?>>() {
         @Override

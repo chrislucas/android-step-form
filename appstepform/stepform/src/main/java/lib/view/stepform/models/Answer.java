@@ -18,6 +18,4 @@ import android.os.Parcelable;
 
 public abstract class Answer<T> implements Parcelable {
     public Answer() {}
-
-
 }

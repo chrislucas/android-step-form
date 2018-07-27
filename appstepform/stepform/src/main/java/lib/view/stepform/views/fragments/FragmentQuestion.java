@@ -50,10 +50,11 @@ public class FragmentQuestion extends Fragment {
         LinearLayout.LayoutParams layoutParams = new LinearLayout
                 .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        question.inflate(getContext()).bindLayoutWithQuestion(getContext());
+        question.inflate(getContext())
+                .bindLayoutWithQuestion(getContext());
+
         View viewQuestion = question.getViewRoot();
         viewQuestion.setLayoutParams(layoutParams);
-
         linearLayout.addView(viewQuestion);
         return viewRoot;
     }

@@ -1,0 +1,2 @@
+Pesquisar
+java.lang.IllegalArgumentException: No view found for id 0x7f0800c4 (br.com.xplorer.stepform:id/view_pager) for fragment FragmentQuestion{3841dc2 #4 id=0x7f0800c4}

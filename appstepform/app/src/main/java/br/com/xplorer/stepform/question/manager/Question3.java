@@ -16,10 +16,10 @@ import br.com.xplorer.stepform.R;
 import br.com.xplorer.stepform.adapters.spinner.AdapterSpinnerOptions;
 import br.com.xplorer.stepform.models.City;
 import lib.view.stepform.models.SingleAnswer;
-import lib.view.stepform.models.SingleQuestion;
+import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question3<T> extends SingleQuestion<T> {
+public class Question3<T> extends QuestionWithSingleAnswer<T> {
 
     private Question3(Parcel reader) {
         readerParcel(reader);

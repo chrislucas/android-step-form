@@ -23,14 +23,10 @@ import lib.view.stepform.models.options.Option;
  *
  * */
 
-public abstract class Question<T> implements Parcelable
-        , ManagerLayoutQuestion<T>, ValidationQuestion<T> {
+public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T>, ValidationQuestion<T> {
 
-    // Resposta
-    public Answer<T> answer;
     // Texto da pergunta
     public String text, title;
-
     // Possivel lista de opcoes casp a pergunta for objetiva
     public List<Option<T>> options;
 
@@ -50,7 +46,6 @@ public abstract class Question<T> implements Parcelable
     public Question(String title, String text, @LayoutRes int layoutResource, List<Option<T>> options) {
         this.text = text;
         this.title = title;
-
         this.layoutResource = layoutResource;
         this.options = options;
     }
@@ -64,12 +59,6 @@ public abstract class Question<T> implements Parcelable
     }
 
     public abstract Answer<T> getAnswer();
-
-    public abstract void setAnswer(Answer<T> answer);
-
-    public boolean isCorrect() {
-        return true;
-    }
 
     public int getLayoutResource() {
         return layoutResource;
@@ -90,9 +79,8 @@ public abstract class Question<T> implements Parcelable
     @Override
     public String toString() {
         return String.format(Locale.getDefault()
-                , "Question: %s.\nAnswer: %s"
+                , "Question: %s."
                 , text
-                , isCorrect() ? "Correct" : "Incorrect"
         );
     }
 }

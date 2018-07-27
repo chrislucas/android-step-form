@@ -5,35 +5,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import lib.view.stepform.models.options.Option;
 
 
 public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
 
-    private List<Option<T>> optionsToChoose;
-
-    private T selectedOption;
+    private LinkedHashSet<Option<T>> valuesSelected;
 
     public MultipleAnswer() {
-        optionsToChoose = new ArrayList<>();
+        valuesSelected = new LinkedHashSet<>();
+    }
+    public LinkedHashSet<Option<T>> getValuesSelected() {
+        return valuesSelected;
     }
 
-    public List<Option<T>> getOptionsToChoose() {
-        return optionsToChoose;
-    }
-
-    public void setOptionsToChoose(List<Option<T>> optionsToChoose) {
-        this.optionsToChoose = optionsToChoose;
-    }
-
-    public T getSelectedOption() {
-        return selectedOption;
-    }
-
-    public void setSelectedOption(T selectedOption) {
-        this.selectedOption = selectedOption;
+    public boolean thisOptionSelected(Option<T> p) {
+        if (valuesSelected != null && valuesSelected.size() > 0) {
+            return valuesSelected.contains(p);
+        }
+        return false;
     }
 
     private MultipleAnswer(Parcel parcel) {
@@ -47,18 +43,26 @@ public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel writer, int flags) {
-        writer.writeList(optionsToChoose);
-        writer.writeValue(selectedOption);
+        if (valuesSelected == null)
+            valuesSelected = new LinkedHashSet<>();
+        Object [] objects = this.valuesSelected.toArray();
+        Option[] options = new Option[objects.length];
+        for (int i=0; i<objects.length; i++) {
+            options[i] = (Option) objects[i];
+        }
+        writer.writeArray(options);
     }
 
     private void readerParcel(Parcel reader) {
-        reader.readList(optionsToChoose, Option.class.getClassLoader());
-        selectedOption = (T) reader.readValue(Object.class.getClassLoader());
+        Object [] objects = reader.readArray(Option.class.getClassLoader());
+        if (valuesSelected == null)
+            valuesSelected = new LinkedHashSet<>();
+        for (Object object : objects) {
+            valuesSelected.add( (Option<T>) object);
+        }
     }
 
-
     public static Creator<MultipleAnswer<?>> CREATOR = new Creator<MultipleAnswer<?>>() {
-
         @Override
         public MultipleAnswer createFromParcel(Parcel source) {
             return new MultipleAnswer<>(source);

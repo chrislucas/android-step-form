@@ -3,21 +3,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:padding="5sp"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/title_question_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/app_name"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
         />
 
-
     <Switch
+        android:id="@+id/switch_question_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textOn="@string/yes"
         android:textOff="@string/no"
+        android:text="@string/no"
+        android:checked="false"
         android:textSize="23sp"
+        android:layout_gravity="start"
         />
 
 </LinearLayout>

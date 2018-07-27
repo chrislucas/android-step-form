@@ -11,10 +11,10 @@ import java.util.List;
 
 import br.com.xplorer.stepform.R;
 import lib.view.stepform.models.SingleAnswer;
-import lib.view.stepform.models.SingleQuestion;
+import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question1<T> extends SingleQuestion<T> {
+public class Question1<T> extends QuestionWithSingleAnswer<T> {
 
     private View viewRoot;
 
@@ -47,9 +47,8 @@ public class Question1<T> extends SingleQuestion<T> {
             editText.requestFocus();
             return false;
         }
-        SingleAnswer<String> singleAnswer = new SingleAnswer<>();
-        singleAnswer.setAnswer(data);
-        this.setAnswer(singleAnswer);
+        if (getAnswer() != null)
+            ((SingleAnswer<String>)getAnswer()).setValue(data);
         return true;
     }
 
@@ -59,7 +58,6 @@ public class Question1<T> extends SingleQuestion<T> {
         if (viewRoot != null) {
             ( (TextView) viewRoot.findViewById(R.id.title_question_1))
                     .setText(getText());
-
             viewRoot.findViewById(R.id.confirm).setOnClickListener(getOnClickListener());
         }
     }
@@ -84,14 +82,14 @@ public class Question1<T> extends SingleQuestion<T> {
         layoutResource = reader.readInt();
     }
 
-    public static final Parcelable.Creator<Question1> CREATOR = new Parcelable.Creator<Question1>() {
+    public static final Creator<Question1<?>> CREATOR = new Parcelable.Creator<Question1<?>>() {
         @Override
-        public Question1 createFromParcel(Parcel source) {
+        public Question1<?> createFromParcel(Parcel source) {
             return new Question1(source);
         }
 
         @Override
-        public Question1[] newArray(int size) {
+        public Question1<?>[] newArray(int size) {
             return new Question1[size];
         }
     };

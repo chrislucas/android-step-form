@@ -12,6 +12,8 @@ import br.com.xplorer.stepform.question.manager.Question1;
 import br.com.xplorer.stepform.question.manager.Question2;
 import br.com.xplorer.stepform.question.manager.Question3;
 import br.com.xplorer.stepform.question.manager.Question4;
+import br.com.xplorer.stepform.question.manager.Question5;
+import lib.view.stepform.models.BooleanQuestion;
 import lib.view.stepform.models.Question;
 import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.models.options.Option;
@@ -25,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<Question> questions = new ArrayList<>();
 
-        Question<Boolean> question1 = new Question1<>("Questao 1", "Questao 1", R.layout.layout_question_1);
-        Question<String> question2 = new Question2<>("Questao 2", "Questao 2", R.layout.layout_question_2);
+        Question<String> question1 = new Question1<>("Questao 1", "Questao 1", R.layout.layout_question_1);
+        BooleanQuestion question2 = new Question2("Questao 2", "Questao 2", R.layout.layout_question_2);
 
         List<Option<City>> optionsQuestion3 = new ArrayList<>();
         Option<City> option = new Option<>(new City(1, "Itaquaquecetuba"), "Itaquaquecetuba");
@@ -46,10 +48,20 @@ public class MainActivity extends AppCompatActivity {
         Question<Role> question4 = new Question4<>("Questão 4", "Cargos existentes na T.I - Questão 4"
                 , R.layout.layout_question_4, optionsQuestion4);
 
+        List<Option<Role>> optionsQuestion5 = new ArrayList<>();
+        optionsQuestion5.add(new Option<>(new Role(1, "Engenheiro de Software"), "Engenheiro de Software"));
+        optionsQuestion5.add(new Option<>(new Role(2, "Analista de Sistemas"), "Analista de Sistemas"));
+        optionsQuestion5.add(new Option<>(new Role(3, "Engenheiro de Hardware"), "Engenheiro de Hardware"));
+        Question<Role> question5 = new Question5<>("Questão 5 - Aptidão Profissional"
+                , "Questão 5", R.layout.layout_question_5, optionsQuestion5);
+
+
+
         questions.add(question1);
         questions.add(question2);
         questions.add(question3);
         questions.add(question4);
+        questions.add(question5);
 
         ModelSurvey modelSurvey = new ModelSurvey(questions);
         modelSurvey.start(this);

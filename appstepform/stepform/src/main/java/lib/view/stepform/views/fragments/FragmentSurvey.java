@@ -43,7 +43,6 @@ public class FragmentSurvey extends Fragment {
         setRetainInstance(true);
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,8 +51,6 @@ public class FragmentSurvey extends Fragment {
 
         mViewPager = view.findViewById(R.id.view_pager);
         mPagerTitleStrip = view.findViewById(R.id.title);
-
-
 
         mViewPager.setPageTransformer(true, modelSurvey.pageTransformer());
 
