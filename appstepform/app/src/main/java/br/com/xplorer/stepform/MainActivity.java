@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 , "Questão 5", R.layout.layout_question_5, optionsQuestion5);
 
 
-
         questions.add(question1);
         questions.add(question2);
         questions.add(question3);

@@ -28,7 +28,7 @@ public class MySurvey extends ModelSurvey {
 
     @Override
     public boolean validateWhenPassing(int nQuestion) {
-        return super.validateWhenPassing(nQuestion);
+        return false;
     }
 
     @Override

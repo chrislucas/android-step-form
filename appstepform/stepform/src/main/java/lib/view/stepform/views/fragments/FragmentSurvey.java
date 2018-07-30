@@ -43,7 +43,7 @@ public class FragmentSurvey extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
+        setRetainInstance(true);
     }
 
     @Override
@@ -60,19 +60,22 @@ public class FragmentSurvey extends Fragment {
         mViewPager = view.findViewById(R.id.view_pager);
         mPagerTitleStrip = view.findViewById(R.id.title);
 
-        mViewPager.setPageTransformer(true, mModelSurvey.pageTransformer());
+        mViewPager.setPageTransformer(false, mModelSurvey.pageTransformer());
 
         mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager(), mModelSurvey.getQuestions());
         mViewPager.setAdapter(mPagerAdapter);
 
-        mPageChangeListener = new DefaultOnPageChangeListener(mModelSurvey
-                , new DefaultOnPageChangeListener.CallbackOnPageChangeListener() {
+        DefaultOnPageChangeListener.CallbackOnPageChangeListener c =
+                new DefaultOnPageChangeListener.CallbackOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 FragmentSurvey.this.mLastPosition = position;
             }
-        });
+        };
+
+        mPageChangeListener = new DefaultOnPageChangeListener(mModelSurvey, c);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
+
         if (mLastPosition != -1) {
             mViewPager.setCurrentItem(mLastPosition, true);
         }

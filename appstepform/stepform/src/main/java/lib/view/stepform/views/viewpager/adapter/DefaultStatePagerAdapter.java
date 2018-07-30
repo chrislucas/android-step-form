@@ -17,13 +17,11 @@ import lib.view.stepform.views.fragments.FragmentQuestion;
 public class DefaultStatePagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Question> questions;
-    //private FragmentManager fm;
     private Fragment [] fragments;
 
     public DefaultStatePagerAdapter(FragmentManager fm, List<Question> questions) {
         super(fm);
         this.questions = questions;
-        //this.fm = fm;
         fragments = new Fragment[questions.size()];
     }
 
@@ -70,8 +68,6 @@ public class DefaultStatePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return questions.get(position).getTitle();
     }
-
-
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {

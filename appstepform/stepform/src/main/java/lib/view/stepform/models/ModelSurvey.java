@@ -24,6 +24,8 @@ public class ModelSurvey implements Parcelable, QuestionCallback {
 
     private List<Question> questions;
 
+    private ViewPager.PageTransformer mPageTransformer = new ScaleViewPageTransformer();
+
     public ModelSurvey(List<Question> questions) {
         this.questions = questions;
     }
@@ -99,7 +101,11 @@ public class ModelSurvey implements Parcelable, QuestionCallback {
          * */
     }
 
+    public void setPageTransformer(ViewPager.PageTransformer mPageTransformer) {
+        this.mPageTransformer = mPageTransformer;
+    }
+
     public ViewPager.PageTransformer pageTransformer() {
-        return new ScaleViewPageTransformer();
+        return this.mPageTransformer;
     }
 }
