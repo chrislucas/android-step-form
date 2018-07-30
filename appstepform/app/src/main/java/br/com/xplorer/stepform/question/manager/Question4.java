@@ -42,14 +42,25 @@ public class Question4 extends QuestionWithSingleAnswer<Role> {
                     .setText(getText());
             RadioGroup radioGroup = viewRoot.findViewById(R.id.group_roles);
             int acc = 0;
+            Role role = getAnswer().getValue();;
             for (Option<Role> op : getOptions()) {
                 AppCompatRadioButton radioButton = new AppCompatRadioButton(context);
+                radioButton.setId(acc);
                 radioButton.setText(op.getDescription());
+                if (role != null && op.getData().equals(role)) {
+                    radioButton.setChecked(true);
+                }
                 LinearLayout.LayoutParams layoutParams =
                         new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                                 , ViewGroup.LayoutParams.WRAP_CONTENT);
                 radioButton.setLayoutParams(layoutParams);
                 radioGroup.addView(radioButton, acc++);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        getAnswer().setValue(getOptions().get(checkedId).getData());
+                    }
+                });
             }
         }
     }

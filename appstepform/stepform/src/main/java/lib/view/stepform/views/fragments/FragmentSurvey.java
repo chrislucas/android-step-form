@@ -72,7 +72,6 @@ public class FragmentSurvey extends Fragment {
                 FragmentSurvey.this.mLastPosition = position;
             }
         });
-
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         if (mLastPosition != -1) {
             mViewPager.setCurrentItem(mLastPosition, true);

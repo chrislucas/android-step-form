@@ -59,4 +59,10 @@ public class Role implements Parcelable{
     public String toString() {
         return String.format(Locale.getDefault(), "ID: %d Desc: %s", id, description);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Role that = (Role) obj;
+        return id == that.getId() && description == that.getDescription();
+    }
 }
