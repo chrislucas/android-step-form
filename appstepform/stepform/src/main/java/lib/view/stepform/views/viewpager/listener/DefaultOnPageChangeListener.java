@@ -11,18 +11,24 @@ public class DefaultOnPageChangeListener implements ViewPager.OnPageChangeListen
     private QuestionCallback callback;
     private boolean validate = false;
 
-    public DefaultOnPageChangeListener(QuestionCallback callback) {
+    public interface CallbackOnPageChangeListener {
+        void onPageSelected(int position);
+    }
+
+    private CallbackOnPageChangeListener callbackOnPageChangeListener;
+
+    public DefaultOnPageChangeListener(QuestionCallback callback, CallbackOnPageChangeListener callbackOnPageChangeListener) {
         this.callback = callback;
+        this.callbackOnPageChangeListener = callbackOnPageChangeListener;
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        //this.validate = this.callback.validateWhenPassing(position);
-    }
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
     @Override
     public void onPageSelected(int position) {
         this.callback.whenSelecting(position);
+        this.callbackOnPageChangeListener.onPageSelected(position);
     }
 
     @Override
@@ -38,7 +44,12 @@ public class DefaultOnPageChangeListener implements ViewPager.OnPageChangeListen
          * @see ViewPager#SCROLL_STATE_SETTLING
          */
         switch (state) {
-
+            case ViewPager.SCROLL_STATE_IDLE:
+                break;
+            case ViewPager.SCROLL_STATE_DRAGGING:
+                break;
+            case ViewPager.SCROLL_STATE_SETTLING:
+                break;
         }
     }
 }

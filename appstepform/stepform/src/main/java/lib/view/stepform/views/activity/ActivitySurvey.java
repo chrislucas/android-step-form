@@ -14,27 +14,55 @@ public class ActivitySurvey extends AppCompatActivity {
 
     public static final String BUNDLE_SURVEY = "BUNDLE_SURVEY";
 
+    private ModelSurvey modelSurvey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
-        Intent intent = getIntent();
-        if (intent != null) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                ModelSurvey modelSurvey = bundle.getParcelable(BUNDLE_SURVEY);
-                if (modelSurvey != null)
-                    loadFragment(modelSurvey);
+        modelSurvey = null;
+        if (savedInstanceState != null) {
+            modelSurvey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
+        }
+        else {
+            Intent intent = getIntent();
+            if (intent != null) {
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    modelSurvey = bundle.getParcelable(BUNDLE_SURVEY);
+                }
             }
         }
+        if (modelSurvey != null)
+            loadFragment(modelSurvey);
     }
 
     private <T> void loadFragment(ModelSurvey modelSurvey) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm != null) {
-            fm.beginTransaction()
-                    .replace(R.id.place_to_replace, FragmentSurvey.newInstance(modelSurvey))
-                    .commit();
+            String tag = FragmentSurvey.class.getSimpleName();
+            if (fm.findFragmentByTag(tag) == null) {
+                fm.beginTransaction()
+                        .replace(R.id.place_to_replace, FragmentSurvey.newInstance(modelSurvey), tag)
+                        .addToBackStack(tag)
+                        .commit();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putParcelable(BUNDLE_SURVEY, modelSurvey);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            modelSurvey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
         }
     }
 }

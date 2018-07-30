@@ -38,6 +38,13 @@ public class Question2 extends BooleanQuestion {
             ( (TextView) viewRootQuestion.findViewById(R.id.title_question_2))
                     .setText(getText());
             Switch mSwitch = viewRootQuestion.findViewById(R.id.switch_question_2);
+
+            if (getAnswer() != null) {
+                Boolean s = getAnswer().getValue();
+                mSwitch.setChecked(s);
+                mSwitch.setText(s ? mSwitch.getTextOn() : mSwitch.getTextOff());
+            }
+
             mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

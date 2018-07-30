@@ -15,11 +15,12 @@ import java.util.List;
 
 import br.com.xplorer.stepform.R;
 
+import br.com.xplorer.stepform.models.Role;
 import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question4<T> extends QuestionWithSingleAnswer<T> {
+public class Question4 extends QuestionWithSingleAnswer<Role> {
 
     private Question4(Parcel reader) {
         readerParcel(reader);
@@ -29,7 +30,7 @@ public class Question4<T> extends QuestionWithSingleAnswer<T> {
         super(title, text, layoutRes);
     }
 
-    public Question4(String title, String text, int layoutRes, List<Option<T>> options) {
+    public Question4(String title, String text, int layoutRes, List<Option<Role>> options) {
         super(title, text, layoutRes, options);
     }
 
@@ -41,7 +42,7 @@ public class Question4<T> extends QuestionWithSingleAnswer<T> {
                     .setText(getText());
             RadioGroup radioGroup = viewRoot.findViewById(R.id.group_roles);
             int acc = 0;
-            for (Option<T> op : getOptions()) {
+            for (Option<Role> op : getOptions()) {
                 AppCompatRadioButton radioButton = new AppCompatRadioButton(context);
                 radioButton.setText(op.getDescription());
                 LinearLayout.LayoutParams layoutParams =
@@ -68,7 +69,7 @@ public class Question4<T> extends QuestionWithSingleAnswer<T> {
     }
 
     private void readerParcel(Parcel reader) {
-        singleAnswer = (SingleAnswer<T>) reader.readValue(SingleAnswer.class.getClassLoader());
+        singleAnswer = (SingleAnswer<Role>) reader.readValue(SingleAnswer.class.getClassLoader());
         text = reader.readString();
         title = reader.readString();
         layoutResource = reader.readInt();

@@ -2,6 +2,7 @@ package lib.view.stepform.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 
 /**
@@ -16,12 +17,15 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
 
     private T value;
 
+    private static ClassLoader mClassLoader;
+
     public T getValue() {
         return value;
     }
 
     public void setValue(T value) {
         this.value = value;
+        SingleAnswer.mClassLoader = value.getClass().getClassLoader();
     }
 
     public SingleAnswer() {}
@@ -37,7 +41,13 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
     }
 
     private void readerParcel(Parcel reader) {
-        value = (T) reader.readValue(Object.class.getClassLoader());
+        if (mClassLoader != null) {
+            try {
+                value = (T) reader.readValue(mClassLoader);
+            } catch (Exception e) {
+                Log.e("CLS_CAST_EXCEPT_OPT_CLS", e.getMessage());
+            }
+        }
     }
 
     private SingleAnswer(Parcel parcel) {
@@ -55,4 +65,9 @@ public class SingleAnswer<T> extends Answer<T> implements Parcelable {
             return new SingleAnswer[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return String.format("Resposta %s", value.toString());
+    }
 }

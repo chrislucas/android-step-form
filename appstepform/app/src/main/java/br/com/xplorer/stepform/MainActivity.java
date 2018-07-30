@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<Question> questions = new ArrayList<>();
 
-        Question<String> question1 = new Question1<>("Questao 1", "Questao 1", R.layout.layout_question_1);
+        Question<String> question1 = new Question1("Questao 1", "Questao 1", R.layout.layout_question_1);
         BooleanQuestion question2 = new Question2("Questao 2", "Questao 2", R.layout.layout_question_2);
 
         List<Option<City>> optionsQuestion3 = new ArrayList<>();
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         optionsQuestion3.add(option);
         option = new Option<>(new City(3, "Ferraz de Vasconcelos"), "Ferraz de Vasconcelos");
         optionsQuestion3.add(option);
-        Question<City> question3 = new Question3<>( "Questao 3", "Questao 3", R.layout.layout_question_3, optionsQuestion3);
+        Question<City> question3 = new Question3( "Questao 3", "Questao 3", R.layout.layout_question_3, optionsQuestion3);
 
         List<Option<Role>> optionsQuestion4 = new ArrayList<>();
         optionsQuestion4.add(new Option<>(new Role(1, "Engenheiro de Software"), "Engenheiro de Software"));
@@ -45,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
         optionsQuestion4.add(new Option<>(new Role(3, "Engenheiro de Hardware"), "Engenheiro de Hardware"));
         optionsQuestion4.add(new Option<>(new Role(4, "Analista de Redes"), "Analista de Redes"));
         optionsQuestion4.add(new Option<>(new Role(5, "Técnico de Redes"), "Técnico de Redes"));
-        Question<Role> question4 = new Question4<>("Questão 4", "Cargos existentes na T.I - Questão 4"
+        Question<Role> question4 = new Question4("Questão 4", "Cargos existentes na T.I - Questão 4"
                 , R.layout.layout_question_4, optionsQuestion4);
 
         List<Option<Role>> optionsQuestion5 = new ArrayList<>();
         optionsQuestion5.add(new Option<>(new Role(1, "Engenheiro de Software"), "Engenheiro de Software"));
         optionsQuestion5.add(new Option<>(new Role(2, "Analista de Sistemas"), "Analista de Sistemas"));
         optionsQuestion5.add(new Option<>(new Role(3, "Engenheiro de Hardware"), "Engenheiro de Hardware"));
-        Question<Role> question5 = new Question5<>("Questão 5 - Aptidão Profissional"
+        Question<Role> question5 = new Question5("Questão 5 - Aptidão Profissional"
                 , "Questão 5", R.layout.layout_question_5, optionsQuestion5);
 
 

@@ -38,7 +38,7 @@ public class FragmentQuestion extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
     }
 
     @Override
@@ -49,6 +49,10 @@ public class FragmentQuestion extends Fragment {
         LinearLayout linearLayout = viewRoot.findViewById(R.id.wrapper_layout_question);
         LinearLayout.LayoutParams layoutParams = new LinearLayout
                 .LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        if (savedInstanceState != null) {
+            question = savedInstanceState.getParcelable(BUNDLE_QUESTION);
+        }
 
         question.inflate(getContext())
                 .bindLayoutWithQuestion(getContext());

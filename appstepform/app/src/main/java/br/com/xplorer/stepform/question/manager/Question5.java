@@ -14,17 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.xplorer.stepform.R;
+import br.com.xplorer.stepform.models.Role;
 import lib.view.stepform.models.MultipleAnswer;
 import lib.view.stepform.models.QuestionWithMultipleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question5<T> extends QuestionWithMultipleAnswer<T> {
+public class Question5 extends QuestionWithMultipleAnswer<Role> {
 
     private Question5(Parcel reader) {
         readerParcel(reader);
     }
 
-    public Question5(String title, String text, int layoutResource, List<Option<T>> options) {
+    public Question5(String title, String text, int layoutResource, List<Option<Role>> options) {
         super(title, text, layoutResource, options);
     }
 
@@ -36,8 +37,8 @@ public class Question5<T> extends QuestionWithMultipleAnswer<T> {
                     .setText(getText());
             LinearLayout linearLayout = viewRoot.findViewById(R.id.wrapper_group_checkbox);
             int acc = 0;
-            final List<Option<T>> options = getOptions();
-            for (Option<T> op : options) {
+            final List<Option<Role>> options = getOptions();
+            for (Option<Role> op : options) {
                 AppCompatCheckBox checkBox = new AppCompatCheckBox(context);
                 checkBox.setId(acc);
                 checkBox.setText(op.getDescription());
@@ -46,7 +47,7 @@ public class Question5<T> extends QuestionWithMultipleAnswer<T> {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         int id = buttonView.getId();
-                        Option<T> option = options.get(id);
+                        Option<Role> option = options.get(id);
                         if (isChecked) {
                             getAnswer().getValuesSelected().add(option);
                         }
@@ -82,20 +83,20 @@ public class Question5<T> extends QuestionWithMultipleAnswer<T> {
         if (options == null)
             options = new ArrayList<>();
         reader.readList(options, Option.class.getClassLoader());
-        multipleAnswer = (MultipleAnswer<T>) reader.readValue(MultipleAnswer.class.getClassLoader());
+        multipleAnswer = (MultipleAnswer<Role>) reader.readValue(MultipleAnswer.class.getClassLoader());
         text = reader.readString();
         title = reader.readString();
         layoutResource = reader.readInt();
     }
 
-    public static final Creator<Question5<?>> CREATOR = new Parcelable.Creator<Question5<?>>()  {
+    public static final Creator<Question5> CREATOR = new Parcelable.Creator<Question5>()  {
         @Override
-        public Question5<?> createFromParcel(Parcel source) {
+        public Question5 createFromParcel(Parcel source) {
             return new Question5(source);
         }
 
         @Override
-        public Question5<?>[] newArray(int size) {
+        public Question5 [] newArray(int size) {
             return new Question5[size];
         }
     };

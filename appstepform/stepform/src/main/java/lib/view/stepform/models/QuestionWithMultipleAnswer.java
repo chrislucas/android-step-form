@@ -27,7 +27,6 @@ public abstract class QuestionWithMultipleAnswer<T> extends Question<T> {
         return multipleAnswer;
     }
 
-
     public List<Option<T>> getOptions() {
         return options;
     }

@@ -60,4 +60,10 @@ public class City implements Parcelable {
     public String toString() {
         return String.format(Locale.getDefault(), "ID %d. Name: %s", id, name);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        City that = (City) obj;
+        return id == that.getId() && name.equals(that.getName());
+    }
 }

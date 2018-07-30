@@ -21,6 +21,7 @@ public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
     public MultipleAnswer() {
         valuesSelected = new LinkedHashSet<>();
     }
+
     public LinkedHashSet<Option<T>> getValuesSelected() {
         return valuesSelected;
     }
@@ -46,19 +47,19 @@ public class MultipleAnswer<T> extends Answer<T> implements Parcelable {
         if (valuesSelected == null)
             valuesSelected = new LinkedHashSet<>();
         Object [] objects = this.valuesSelected.toArray();
-        Option[] options = new Option[objects.length];
-        for (int i=0; i<objects.length; i++) {
-            options[i] = (Option) objects[i];
-        }
-        writer.writeArray(options);
+        Option[] selectedOptionsArray = new Option[objects.length];
+        System.arraycopy(objects, 0, selectedOptionsArray, 0, objects.length);
+        writer.writeArray(selectedOptionsArray);
     }
 
     private void readerParcel(Parcel reader) {
-        Object [] objects = reader.readArray(Option.class.getClassLoader());
         if (valuesSelected == null)
             valuesSelected = new LinkedHashSet<>();
-        for (Object object : objects) {
-            valuesSelected.add( (Option<T>) object);
+        Object [] selectedOptionsArray = reader.readArray(Option.class.getClassLoader());
+        if (selectedOptionsArray.length >  0) {
+            for (Object object : selectedOptionsArray) {
+                valuesSelected.add((Option<T>) object);
+            }
         }
     }
 

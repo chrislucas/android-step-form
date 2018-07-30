@@ -14,7 +14,7 @@ import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
-public class Question1<T> extends QuestionWithSingleAnswer<T> {
+public class Question1 extends QuestionWithSingleAnswer<String> {
 
     private View viewRoot;
 
@@ -24,10 +24,12 @@ public class Question1<T> extends QuestionWithSingleAnswer<T> {
 
     public Question1(String title, String text, int layoutRes) {
         super(title, text, layoutRes);
+        getAnswer().setValue("");
     }
 
-    public Question1(String title, String text, int layoutRes, List<Option<T>> list) {
+    public Question1(String title, String text, int layoutRes, List<Option<String>> list) {
         super(title, text, layoutRes, list);
+        getAnswer().setValue("");
     }
 
     private View.OnClickListener getOnClickListener() {
@@ -47,8 +49,9 @@ public class Question1<T> extends QuestionWithSingleAnswer<T> {
             editText.requestFocus();
             return false;
         }
-        if (getAnswer() != null)
-            ((SingleAnswer<String>)getAnswer()).setValue(data);
+        if (getAnswer() != null) {
+            getAnswer().setValue(data);
+        }
         return true;
     }
 
@@ -76,20 +79,20 @@ public class Question1<T> extends QuestionWithSingleAnswer<T> {
     }
 
     private void readerParcel(Parcel reader) {
-        singleAnswer = (SingleAnswer<T>) reader.readValue(SingleAnswer.class.getClassLoader());
+        singleAnswer = (SingleAnswer<String>) reader.readValue(SingleAnswer.class.getClassLoader());
         text = reader.readString();
         title = reader.readString();
         layoutResource = reader.readInt();
     }
 
-    public static final Creator<Question1<?>> CREATOR = new Parcelable.Creator<Question1<?>>() {
+    public static final Creator<Question1> CREATOR = new Parcelable.Creator<Question1>() {
         @Override
-        public Question1<?> createFromParcel(Parcel source) {
+        public Question1 createFromParcel(Parcel source) {
             return new Question1(source);
         }
 
         @Override
-        public Question1<?>[] newArray(int size) {
+        public Question1[] newArray(int size) {
             return new Question1[size];
         }
     };
