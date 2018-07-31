@@ -23,12 +23,10 @@ public class Question2 extends BooleanQuestion {
 
     public Question2(String title, String text, int layoutRes) {
         super(title, text, layoutRes);
-        getAnswer().setValue(false);
     }
 
     public Question2(String title, String text, int layoutRes, List<Option<Boolean>> options) {
         super(title, text, layoutRes, options);
-        getAnswer().setValue(false);
     }
 
     @Override
@@ -41,8 +39,10 @@ public class Question2 extends BooleanQuestion {
 
             if (getAnswer() != null) {
                 Boolean s = getAnswer().getValue();
-                mSwitch.setChecked(s);
-                mSwitch.setText(s ? mSwitch.getTextOn() : mSwitch.getTextOff());
+                if (s != null) {
+                    mSwitch.setChecked(s);
+                    mSwitch.setText(s ? mSwitch.getTextOn() : mSwitch.getTextOff());
+                }
             }
 
             mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -50,6 +50,8 @@ public class Question2 extends BooleanQuestion {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     buttonView.setText(isChecked ? ((Switch) buttonView).getTextOn() : ((Switch) buttonView).getTextOff()) ;
                     getAnswer().setValue(isChecked);
+                    if (getObserverQuestion() != null)
+                        getObserverQuestion().notify(Question2.this);
                 }
             });
         }
@@ -89,6 +91,6 @@ public class Question2 extends BooleanQuestion {
 
     @Override
     public boolean validate() {
-        return singleAnswer == null ? false : singleAnswer.getValue();
+        return getAnswer().getValue() != null;
     }
 }

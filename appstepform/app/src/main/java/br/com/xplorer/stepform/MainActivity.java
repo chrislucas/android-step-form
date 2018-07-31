@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         BooleanQuestion question2 = new Question2("Questao 2", "Questao 2", R.layout.layout_question_2);
 
         List<Option<City>> optionsQuestion3 = new ArrayList<>();
-        Option<City> option = new Option<>(new City(1, "Itaquaquecetuba"), "Itaquaquecetuba");
+        Option<City> option = new Option<>(new City(-1, "Selecione"), "Selecione");
+        optionsQuestion3.add(option);
+        option = new Option<>(new City(1, "Itaquaquecetuba"), "Itaquaquecetuba");
         optionsQuestion3.add(option);
         option = new Option<>(new City(2, "Poá"), "Poá");
         optionsQuestion3.add(option);

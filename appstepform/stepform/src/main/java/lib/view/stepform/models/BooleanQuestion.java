@@ -21,8 +21,8 @@ public abstract class BooleanQuestion extends Question<Boolean> {
     public BooleanQuestion(String title, String text, int layoutResource, List<Option<Boolean>> options) {
         super(title, text, layoutResource, options);
         singleAnswer = new SingleAnswer<>();
-
     }
+
     @Override
     public SingleAnswer<Boolean> getAnswer() {
         return singleAnswer;

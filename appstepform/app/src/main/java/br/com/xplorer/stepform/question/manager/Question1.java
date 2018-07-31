@@ -18,6 +18,8 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
 
     private View viewRoot;
 
+    private EditText textAnswer;
+
     private Question1(Parcel reader) {
         readerParcel(reader);
     }
@@ -32,27 +34,28 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
         getAnswer().setValue("");
     }
 
-    private View.OnClickListener getOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               validate();
-            }
-        };
-    }
-
-    private boolean confirm() {
-        EditText editText = viewRoot.findViewById(R.id.text_answer_question_1);
-        String data = editText.getText().toString();
+    @Override
+    public void setAnswer() {
+        String data = textAnswer.getText().toString();
         if (data.isEmpty() || data.matches("\\s+")) {
-            editText.setError("Campo em branco.");
-            editText.requestFocus();
-            return false;
+            textAnswer.setError("Campo em branco.");
+            textAnswer.requestFocus();
         }
+
         if (getAnswer() != null) {
             getAnswer().setValue(data);
         }
-        return true;
+
+        if (getObserverQuestion() != null)
+            getObserverQuestion().notify(Question1.this);
+    }
+
+    private boolean isNotEmpty(String in) {
+        return in != null && ! in.equals("") && ! in.matches("\\s+");
+    }
+
+    private boolean confirm() {
+        return getAnswer() != null && isNotEmpty(getAnswer().getValue());
     }
 
     @Override
@@ -61,7 +64,14 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
         if (viewRoot != null) {
             ( (TextView) viewRoot.findViewById(R.id.title_question_1))
                     .setText(getText());
-            viewRoot.findViewById(R.id.confirm).setOnClickListener(getOnClickListener());
+            viewRoot.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setAnswer();
+                }
+            });
+
+            textAnswer = viewRoot.findViewById(R.id.text_answer_question_1);
         }
     }
 

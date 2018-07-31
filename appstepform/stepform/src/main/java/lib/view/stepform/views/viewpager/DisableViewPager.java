@@ -9,9 +9,7 @@ import android.view.MotionEvent;
 
 public class DisableViewPager extends ViewPager {
 
-
     private boolean enabled = false;
-
 
     public DisableViewPager(@NonNull Context context) {
         super(context);
@@ -23,11 +21,19 @@ public class DisableViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return enabled && super.onTouchEvent(ev);
+
+        if ( ! enabled && ev.getActionMasked() == MotionEvent.ACTION_MOVE)
+            return false;
+        return super.onTouchEvent(ev);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return enabled && super.onInterceptTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

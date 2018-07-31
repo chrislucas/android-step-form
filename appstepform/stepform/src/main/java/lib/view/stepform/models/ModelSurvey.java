@@ -10,17 +10,15 @@ import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.view.stepform.action.QuestionCallback;
 import lib.view.stepform.views.activity.ActivitySurvey;
 import lib.view.stepform.views.viewpager.transformer.ScaleViewPageTransformer;
 
 
-public class ModelSurvey implements Parcelable, QuestionCallback {
+public class ModelSurvey implements Parcelable {
 
     private List<Question> questions;
 
@@ -77,29 +75,6 @@ public class ModelSurvey implements Parcelable, QuestionCallback {
             return new ModelSurvey[size];
         }
     };
-
-    @Override
-    public void onStart() {}
-
-    @Override
-    public boolean validateWhenPassing(int nQuestion) {
-        Question question = questions.get(nQuestion);
-        Log.i("WHEN_PASSING", question.toString());
-        return question.validate();
-    }
-
-    @Override
-    public void whenSelecting(int nQuestion) {
-        Question question = questions.get(nQuestion);
-        Log.i("WHEN_SELECTING", question.toString());
-    }
-
-    @Override
-    public void atTheEnd() {
-        /**
-         * Fazer qualquer coisa. Enviar os dados para uma API, converte-los em JSON etc.
-         * */
-    }
 
     public void setPageTransformer(ViewPager.PageTransformer mPageTransformer) {
         this.mPageTransformer = mPageTransformer;

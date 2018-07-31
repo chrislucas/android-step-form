@@ -22,26 +22,6 @@ public class MySurvey extends ModelSurvey {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public boolean validateWhenPassing(int nQuestion) {
-        return false;
-    }
-
-    @Override
-    public void whenSelecting(int nQuestion) {
-        super.whenSelecting(nQuestion);
-    }
-
-    @Override
-    public void atTheEnd() {
-        super.atTheEnd();
-    }
-
-    @Override
     public ViewPager.PageTransformer pageTransformer() {
         return super.pageTransformer();
     }

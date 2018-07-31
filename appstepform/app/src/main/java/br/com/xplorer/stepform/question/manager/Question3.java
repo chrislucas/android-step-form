@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import lib.view.stepform.models.QuestionWithSingleAnswer;
 import lib.view.stepform.models.options.Option;
 
 public class Question3 extends QuestionWithSingleAnswer<City> {
+
 
     private Question3(Parcel reader) {
         readerParcel(reader);
@@ -50,14 +50,15 @@ public class Question3 extends QuestionWithSingleAnswer<City> {
                                 , R.layout.custom_layout_dropdown_item    // layout do spinner aberto
                         );
                 citiesOptions.setAdapter(adapter);
+                citiesOptions.setSelection(0, false);
                 citiesOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Option<City> option = options.get(position);
                         City city = option.getData();
-                        Toast.makeText(context
-                                , city.getName(), Toast.LENGTH_LONG).show();
                         getAnswer().setValue(city);
+                        if (getObserverQuestion() != null)
+                            getObserverQuestion().notify(Question3.this);
                     }
 
                     @Override
@@ -119,6 +120,6 @@ public class Question3 extends QuestionWithSingleAnswer<City> {
 
     @Override
     public boolean validate() {
-        return false;
+        return getAnswer().getValue() != null && getAnswer().getValue().getId() != -1;
     }
 }

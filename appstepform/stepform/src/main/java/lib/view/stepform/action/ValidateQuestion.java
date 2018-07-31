@@ -1,5 +1,6 @@
 package lib.view.stepform.action;
 
-public interface ValidationQuestion<T>  {
+public interface ValidateQuestion {
+    void setAnswer();
     boolean validate();
 }

@@ -22,6 +22,8 @@ import lib.view.stepform.models.options.Option;
 
 public class Question4 extends QuestionWithSingleAnswer<Role> {
 
+    private boolean userInteract = false;
+
     private Question4(Parcel reader) {
         readerParcel(reader);
     }
@@ -58,7 +60,10 @@ public class Question4 extends QuestionWithSingleAnswer<Role> {
                 radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        userInteract = true;
                         getAnswer().setValue(getOptions().get(checkedId).getData());
+                        if (getObserverQuestion() != null)
+                            getObserverQuestion().notify(Question4.this);
                     }
                 });
             }
@@ -103,7 +108,6 @@ public class Question4 extends QuestionWithSingleAnswer<Role> {
 
     @Override
     public boolean validate() {
-
-        return false;
+        return userInteract;
     }
 }

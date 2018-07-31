@@ -50,9 +50,11 @@ public class Question5 extends QuestionWithMultipleAnswer<Role> {
                         Option<Role> option = options.get(id);
                         if (isChecked) {
                             getAnswer().getValuesSelected().add(option);
+                            getObserverQuestion().notify(Question5.this);
                         }
                         else {
                             getAnswer().getValuesSelected().remove(option);
+                            getObserverQuestion().notify(Question5.this);
                         }
                     }
                 });
@@ -103,6 +105,6 @@ public class Question5 extends QuestionWithMultipleAnswer<Role> {
 
     @Override
     public boolean validate() {
-        return false;
+        return getAnswer().getValuesSelected().size() > 0;
     }
 }

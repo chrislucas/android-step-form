@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 import lib.view.stepform.action.ManagerLayoutQuestion;
-import lib.view.stepform.action.ValidationQuestion;
+import lib.view.stepform.action.ObserverQuestion;
+import lib.view.stepform.action.ValidateQuestion;
 import lib.view.stepform.models.options.Option;
 
 
@@ -23,19 +24,21 @@ import lib.view.stepform.models.options.Option;
  *
  * */
 
-public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T>, ValidationQuestion<T> {
+public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T>, ValidateQuestion {
 
     // Texto da pergunta
     public String text, title;
     // Possivel lista de opcoes casp a pergunta for objetiva
     public List<Option<T>> options;
 
-    protected Question() { }
+    public ObserverQuestion observerQuestion;
 
     @LayoutRes
     protected int layoutResource;
 
     protected View viewRoot;
+
+    protected Question() { }
 
     public Question(String title, String text, @LayoutRes int layoutResource) {
         this.text = text;
@@ -76,11 +79,25 @@ public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T
     public List<Option<T>> getOptions() {
         return options;
     }
+
+    public void setObserverQuestion(ObserverQuestion observerQuestion) {
+        this.observerQuestion = observerQuestion;
+    }
+
+    public ObserverQuestion getObserverQuestion() {
+        return observerQuestion;
+    }
+
     @Override
     public String toString() {
         return String.format(Locale.getDefault()
                 , "Question: %s."
                 , text
         );
+    }
+
+    @Override
+    public void setAnswer() {
+
     }
 }
