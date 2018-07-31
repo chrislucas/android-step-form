@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,18 +17,18 @@ import java.util.Locale;
 
 import lib.view.stepform.R;
 import lib.view.stepform.action.ObserverQuestion;
-import lib.view.stepform.models.ModelSurvey;
+import lib.view.stepform.models.AbstractSurvey;
 import lib.view.stepform.models.Question;
-import lib.view.stepform.views.viewpager.DisableViewPager;
+import lib.view.stepform.views.viewpager.ViewPagerDisableMovement;
 import lib.view.stepform.views.viewpager.adapter.DefaultStatePagerAdapter;
 import lib.view.stepform.views.viewpager.callback.CallbackOnPageChangeListener;
 import lib.view.stepform.views.viewpager.listener.DefaultOnPageChangeListener;
 
 public class FragmentSurvey extends Fragment implements ObserverQuestion {
 
-    private ModelSurvey mModelSurvey;
+    private AbstractSurvey mModelSurvey;
 
-    private DisableViewPager mViewPager;
+    private ViewPagerDisableMovement mViewPager;
 
     private static final String BUNDLE_SURVEY           = "BUNDLE_SURVEY";
     private static final String BUNDLE_LAST_POSITION    = "BUNDLE_LAST_POSITION";
@@ -42,7 +41,7 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
     public FragmentSurvey() {}
 
     // TODO: Rename and change types and number of parameters
-    public static FragmentSurvey newInstance(ModelSurvey modelSurvey) {
+    public static FragmentSurvey newInstance(AbstractSurvey modelSurvey) {
         FragmentSurvey fragment = new FragmentSurvey();
         fragment.mModelSurvey = modelSurvey;
         return fragment;
@@ -72,11 +71,11 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
         mViewPager = view.findViewById(R.id.view_pager);
         mViewPager.setEnabled(false);
 
-        //PagerTitleStrip mPagerTitleStrip = view.findViewById(R.id.title);
-
         mViewPager.setPageTransformer(false, mModelSurvey.pageTransformer());
 
-        PagerAdapter mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager(), mModelSurvey.getQuestions());
+        PagerAdapter mPagerAdapter = new DefaultStatePagerAdapter(getFragmentManager()
+                , mModelSurvey.getQuestions());
+
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setOffscreenPageLimit(1);
 
@@ -89,8 +88,11 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
                             , String.format(Locale.getDefault(), "PAGE_SCROLLED %d.\n %s"
                                     , position, question.toString()));
                     mLastPosition = position;
-                    enabledPages[position] = question.validate();
+                    enabledPages[position] = question.isCorrect();
                     mViewPager.setEnabled(enabledPages[position]);
+                    if (position+1 == mModelSurvey.getQuestions().size()) {
+                        tryEndSurvey();
+                    }
                 }
 
                 @Override
@@ -116,7 +118,6 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
                             str = "SCROLL_STATE_SETTLING";
                             break;
                     }
-
                     Log.i("PAGE_SCROLL_STATE", str);
                 }
             }
@@ -145,9 +146,35 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
     }
 
     @Override
-    public void notify(Question question) {
-        enabledPages[mLastPosition] = question.validate();
+    public void notifyObserverQuestion(Question question) {
+        enabledPages[mLastPosition] = question.isCorrect();
+        if (enabledPages[mLastPosition]) {
+            String msg = String.format(Locale.getDefault()
+                    , "Pergunta %d correta", mLastPosition + 1);
+            Toast.makeText(getContext()
+                    , msg
+                    , Toast.LENGTH_SHORT).show();
+        }
+
         mViewPager.setEnabled(enabledPages[mLastPosition]);
+    }
+
+    private void tryEndSurvey() {
+        boolean flag = true;
+        for (boolean f : enabledPages) {
+            if(!f) {
+                flag = false;
+                break;
+            }
+        }
+
+        /**
+         * Se todas as perguntas foram respondidas corretamente podemos finalizar o formulario e fazer
+         * qualquer coisa com os dados
+         * */
+        if (flag) {
+            mModelSurvey.end();
+        }
     }
 
     @Override

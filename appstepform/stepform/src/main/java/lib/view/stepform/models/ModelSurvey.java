@@ -1,51 +1,27 @@
 package lib.view.stepform.models;
 
 
-
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.view.stepform.views.activity.ActivitySurvey;
-import lib.view.stepform.views.viewpager.transformer.ScaleViewPageTransformer;
+import lib.view.stepform.action.SurveyCallback;
 
+public final class ModelSurvey extends AbstractSurvey {
 
-public class ModelSurvey implements Parcelable {
-
-    private List<Question> questions;
-
-    private ViewPager.PageTransformer mPageTransformer = new ScaleViewPageTransformer();
-
-    public ModelSurvey(List<Question> questions) {
-        this.questions = questions;
-    }
-
-    public void start(Context context) {
-        Intent intent = new Intent(context, ActivitySurvey.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ActivitySurvey.BUNDLE_SURVEY, this);
-        intent.putExtras(bundle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-        if (context instanceof FragmentActivity) {
-            ( (AppCompatActivity) context).finish();
-        }
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
+    public ModelSurvey(Context context, List<Question> questions, SurveyCallback surveyCallback) {
+        super(context, questions, surveyCallback);
     }
 
     private ModelSurvey(Parcel reader) {
         readerParcel(reader);
+    }
+
+    public void end() {
+        surveyCallback.atTheEnd();
     }
 
     @Override
@@ -56,12 +32,14 @@ public class ModelSurvey implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(questions);
+        dest.writeSerializable(surveyCallback);
     }
 
     private void readerParcel(Parcel reader) {
         if (questions == null)
             questions = new ArrayList<>();
         reader.readList(questions, Question.class.getClassLoader());
+        surveyCallback = (SurveyCallback) reader.readSerializable();
     }
 
     public static final Parcelable.Creator<ModelSurvey> CREATOR = new Parcelable.Creator<ModelSurvey>() {
@@ -76,11 +54,4 @@ public class ModelSurvey implements Parcelable {
         }
     };
 
-    public void setPageTransformer(ViewPager.PageTransformer mPageTransformer) {
-        this.mPageTransformer = mPageTransformer;
-    }
-
-    public ViewPager.PageTransformer pageTransformer() {
-        return this.mPageTransformer;
-    }
 }

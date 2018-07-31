@@ -16,8 +16,8 @@ import java.util.List;
 import br.com.xplorer.stepform.R;
 
 import br.com.xplorer.stepform.models.Role;
-import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.QuestionWithSingleAnswer;
+import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.options.Option;
 
 public class Question4 extends QuestionWithSingleAnswer<Role> {
@@ -63,7 +63,7 @@ public class Question4 extends QuestionWithSingleAnswer<Role> {
                         userInteract = true;
                         getAnswer().setValue(getOptions().get(checkedId).getData());
                         if (getObserverQuestion() != null)
-                            getObserverQuestion().notify(Question4.this);
+                            getObserverQuestion().notifyObserverQuestion(Question4.this);
                     }
                 });
             }
@@ -107,7 +107,7 @@ public class Question4 extends QuestionWithSingleAnswer<Role> {
     };
 
     @Override
-    public boolean validate() {
+    public boolean isCorrect() {
         return userInteract;
     }
 }

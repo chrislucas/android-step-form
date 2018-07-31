@@ -58,7 +58,7 @@ public class Question3 extends QuestionWithSingleAnswer<City> {
                         City city = option.getData();
                         getAnswer().setValue(city);
                         if (getObserverQuestion() != null)
-                            getObserverQuestion().notify(Question3.this);
+                            getObserverQuestion().notifyObserverQuestion(Question3.this);
                     }
 
                     @Override
@@ -119,7 +119,7 @@ public class Question3 extends QuestionWithSingleAnswer<City> {
     };
 
     @Override
-    public boolean validate() {
+    public boolean isCorrect() {
         return getAnswer().getValue() != null && getAnswer().getValue().getId() != -1;
     }
 }

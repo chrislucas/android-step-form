@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import lib.view.stepform.action.ManagerLayoutQuestion;
 import lib.view.stepform.action.ObserverQuestion;
-import lib.view.stepform.action.ValidateQuestion;
+import lib.view.stepform.action.QuestionCallback;
 import lib.view.stepform.models.options.Option;
 
 
@@ -20,17 +20,23 @@ import lib.view.stepform.models.options.Option;
  *
  * Num questionario podemos ter perguntas que aceitam multiplas respostas ou respostas unicas
  *
- *
- *
+ * A classe Question tambem é um objeto "Observável". Ela possui um atributo do tipo {@link ObserverQuestion}
+ * para notificar seu observador quando seu estado mudar
  * */
 
-public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T>, ValidateQuestion {
+public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T>, QuestionCallback {
 
     // Texto da pergunta
     public String text, title;
     // Possivel lista de opcoes casp a pergunta for objetiva
     public List<Option<T>> options;
 
+    /**
+     * Observador de uma questao.
+     *
+     * Usamos esse Design Pattern para avisar a tela com o questionario quando uma questao
+     * for respondida
+     * */
     public ObserverQuestion observerQuestion;
 
     @LayoutRes
@@ -97,7 +103,5 @@ public abstract class Question<T> implements Parcelable, ManagerLayoutQuestion<T
     }
 
     @Override
-    public void setAnswer() {
-
-    }
+    public void setAnswer() {}
 }

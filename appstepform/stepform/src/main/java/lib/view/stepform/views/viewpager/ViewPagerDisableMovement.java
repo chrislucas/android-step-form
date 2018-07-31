@@ -7,32 +7,32 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class DisableViewPager extends ViewPager {
+import lib.view.stepform.action.old.LockScrollingViewPager;
+
+public class ViewPagerDisableMovement extends ViewPager {
 
     private boolean enabled = false;
 
-    public DisableViewPager(@NonNull Context context) {
+    private LockScrollingViewPager onTouchEventViewPager;
+
+    public ViewPagerDisableMovement(@NonNull Context context) {
         super(context);
     }
 
-    public DisableViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public ViewPagerDisableMovement(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-
-        if ( ! enabled && ev.getActionMasked() == MotionEvent.ACTION_MOVE)
-            return false;
-        return super.onTouchEvent(ev);
+        return this.enabled && super.onTouchEvent(ev);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev);
+        return this.enabled && super.onInterceptTouchEvent(ev);
     }
 
-    @Override
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

@@ -6,15 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import lib.view.stepform.R;
+import lib.view.stepform.models.AbstractSurvey;
 import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.views.fragments.FragmentSurvey;
 
 public class ActivitySurvey extends AppCompatActivity {
 
-
     public static final String BUNDLE_SURVEY = "BUNDLE_SURVEY";
 
-    private ModelSurvey modelSurvey;
+    private AbstractSurvey modelSurvey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ActivitySurvey extends AppCompatActivity {
             loadFragment(modelSurvey);
     }
 
-    private <T> void loadFragment(ModelSurvey modelSurvey) {
+    private void loadFragment(AbstractSurvey modelSurvey) {
         FragmentManager fm = getSupportFragmentManager();
         if (fm != null) {
             String tag = FragmentSurvey.class.getSimpleName();

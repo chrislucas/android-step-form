@@ -10,10 +10,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.xplorer.stepform.R;
-import lib.view.stepform.models.SingleAnswer;
+import lib.view.stepform.models.Question;
 import lib.view.stepform.models.QuestionWithSingleAnswer;
+import lib.view.stepform.models.SingleAnswer;
 import lib.view.stepform.models.options.Option;
 
+
+/**
+ * Toda classe que deriva de da classe {@link Question} é uma
+ * classe "observavel" ou um "sujeito", isso porque toda vez
+ *
+ * */
 public class Question1 extends QuestionWithSingleAnswer<String> {
 
     private View viewRoot;
@@ -47,7 +54,7 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
         }
 
         if (getObserverQuestion() != null)
-            getObserverQuestion().notify(Question1.this);
+            getObserverQuestion().notifyObserverQuestion(Question1.this);
     }
 
     private boolean isNotEmpty(String in) {
@@ -70,7 +77,6 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
                     setAnswer();
                 }
             });
-
             textAnswer = viewRoot.findViewById(R.id.text_answer_question_1);
         }
     }
@@ -108,7 +114,7 @@ public class Question1 extends QuestionWithSingleAnswer<String> {
     };
 
     @Override
-    public boolean validate() {
+    public boolean isCorrect() {
         return confirm();
     }
 }

@@ -54,8 +54,7 @@ public class FragmentQuestion extends Fragment {
             question = savedInstanceState.getParcelable(BUNDLE_QUESTION);
         }
 
-        question.inflate(getContext())
-                .bindLayoutWithQuestion(getContext());
+        question.inflate(getContext()).bindLayoutWithQuestion(getContext());
 
         View viewQuestion = question.getViewRoot();
         viewQuestion.setLayoutParams(layoutParams);

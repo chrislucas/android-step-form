@@ -1,6 +1,8 @@
 package lib.view.stepform.action;
 
-public interface SurveyCallback {
-    void onStart();
+import java.io.Serializable;
+
+public interface SurveyCallback extends Serializable {
+    void beforeStart();
     void atTheEnd();
 }

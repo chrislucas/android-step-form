@@ -51,7 +51,7 @@ public class Question2 extends BooleanQuestion {
                     buttonView.setText(isChecked ? ((Switch) buttonView).getTextOn() : ((Switch) buttonView).getTextOff()) ;
                     getAnswer().setValue(isChecked);
                     if (getObserverQuestion() != null)
-                        getObserverQuestion().notify(Question2.this);
+                        getObserverQuestion().notifyObserverQuestion(Question2.this);
                 }
             });
         }
@@ -90,7 +90,7 @@ public class Question2 extends BooleanQuestion {
     };
 
     @Override
-    public boolean validate() {
+    public boolean isCorrect() {
         return getAnswer().getValue() != null;
     }
 }

@@ -1,32 +1,25 @@
 package lib.view.stepform.views.viewpager.listener;
 
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 
-import lib.view.stepform.action.QuestionCallback;
 import lib.view.stepform.views.viewpager.callback.CallbackOnPageChangeListener;
 
 public class DefaultOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
-
-
     private CallbackOnPageChangeListener callbackOnPageChangeListener;
 
-    public DefaultOnPageChangeListener(@Nullable CallbackOnPageChangeListener callbackOnPageChangeListener) {
-
+    public DefaultOnPageChangeListener(CallbackOnPageChangeListener callbackOnPageChangeListener) {
         this.callbackOnPageChangeListener = callbackOnPageChangeListener;
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        if (callbackOnPageChangeListener != null)
-            callbackOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+        callbackOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
     }
 
     @Override
     public void onPageSelected(int position) {
-        if (callbackOnPageChangeListener != null)
-            this.callbackOnPageChangeListener.onPageSelected(position);
+        this.callbackOnPageChangeListener.onPageSelected(position);
     }
 
     @Override

@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".views.fragments.FragmentSurvey"
     android:orientation="vertical">
-    <lib.view.stepform.views.viewpager.DisableViewPager
+    <lib.view.stepform.views.viewpager.ViewPagerDisableMovement
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.view.PagerTitleStrip
+        <!--
+        <android.support.v4.view.PagerTabStrip
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +20,8 @@
             android:textColor="#fff"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:visibility="gone"
+            android:visibility="visible"
             />
-    </lib.view.stepform.views.viewpager.DisableViewPager>
+            -->
+    </lib.view.stepform.views.viewpager.ViewPagerDisableMovement>
 </LinearLayout>
