@@ -1,10 +1,10 @@
 package br.com.xplorer.stepform;
 
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +15,14 @@ import br.com.xplorer.stepform.question.manager.Question3;
 import br.com.xplorer.stepform.question.manager.Question2;
 import br.com.xplorer.stepform.question.manager.Question4;
 import br.com.xplorer.stepform.question.manager.Question5;
-import lib.view.stepform.action.SurveyCallback;
 import lib.view.stepform.models.AbstractSurvey;
 import lib.view.stepform.models.BooleanQuestion;
 import lib.view.stepform.models.Question;
 import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.models.options.Option;
+import lib.view.stepform.views.fragments.FragmentSurvey;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DefaultSurveyCallback.AccessUI {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,34 +80,39 @@ public class MainActivity extends AppCompatActivity {
         questions.add(question3);
         questions.add(question4);
         questions.add(question5);
-        AbstractSurvey modelSurvey = new ModelSurvey(this, questions, new SurveyCallback() {
-            @Override
-            public void beforeStart() {
 
-            }
-
-            @Override
-            public void atTheEnd() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Finalizar Formulário");
-                builder.setMessage("Deseja finalizar o formulário");
-                DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                break;
-                        }
-                        dialog.dismiss();
-                    }
-                };
-                builder.setPositiveButton(R.string.yes, onClickListener);
-                builder.setPositiveButton(R.string.no, onClickListener);
-                if (isFinishing() ) {
-                    builder.create().show();
-                }
-            }
-        });
+        ModelSurvey modelSurvey = new ModelSurvey(this, questions
+                , new DefaultSurveyCallback(this), R.id.local_insert_fragment);
         modelSurvey.start();
+    }
+
+
+    @Override
+    public void beforeStart() {
+
+    }
+
+    @Override
+    public void atTheEnd() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Finalizar Formulário");
+        builder.setMessage("Deseja finalizar o formulário");
+        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        break;
+                }
+                dialog.dismiss();
+            }
+        };
+        builder.setPositiveButton(lib.view.stepform.R.string.yes, onClickListener);
+        builder.setNegativeButton(lib.view.stepform.R.string.no, onClickListener);
+        AlertDialog alertDialog = builder.create();
+
+        if (!isFinishing() && ! alertDialog.isShowing()) {
+            builder.create().show();
+        }
     }
 }

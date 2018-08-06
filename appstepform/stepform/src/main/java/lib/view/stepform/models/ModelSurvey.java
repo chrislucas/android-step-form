@@ -1,9 +1,11 @@
 package lib.view.stepform.models;
 
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +14,9 @@ import lib.view.stepform.action.SurveyCallback;
 
 public final class ModelSurvey extends AbstractSurvey {
 
-    public ModelSurvey(Context context, List<Question> questions, SurveyCallback surveyCallback) {
-        super(context, questions, surveyCallback);
+    public ModelSurvey(FragmentActivity fragmentActivity, List<Question> questions
+            , SurveyCallback surveyCallback, @IdRes int idResourceLayout) {
+        super(fragmentActivity, questions, surveyCallback, idResourceLayout);
     }
 
     private ModelSurvey(Parcel reader) {
@@ -21,8 +24,14 @@ public final class ModelSurvey extends AbstractSurvey {
     }
 
     public void end() {
-        surveyCallback.atTheEnd();
+        if (surveyCallback != null)
+            surveyCallback.atTheEnd();
+        else {
+            Log.e("END_SURVEY_CB_NOT_FOUND", "callback to finish survey not found");
+        }
     }
+
+
 
     @Override
     public int describeContents() {

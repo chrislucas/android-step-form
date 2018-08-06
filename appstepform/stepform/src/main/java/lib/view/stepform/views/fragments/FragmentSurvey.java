@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import lib.view.stepform.R;
@@ -20,6 +21,7 @@ import lib.view.stepform.action.ObserverQuestion;
 import lib.view.stepform.models.AbstractSurvey;
 import lib.view.stepform.models.Question;
 import lib.view.stepform.views.viewpager.ViewPagerDisableMovement;
+import lib.view.stepform.views.viewpager.ViewPagerIndicatorWithTextDot;
 import lib.view.stepform.views.viewpager.adapter.DefaultStatePagerAdapter;
 import lib.view.stepform.views.viewpager.callback.CallbackOnPageChangeListener;
 import lib.view.stepform.views.viewpager.listener.DefaultOnPageChangeListener;
@@ -33,6 +35,7 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
     private static final String BUNDLE_SURVEY           = "BUNDLE_SURVEY";
     private static final String BUNDLE_LAST_POSITION    = "BUNDLE_LAST_POSITION";
     private static final String BUNDLE_ENABLED_PAGES    = "BUNDLE_ENABLED_PAGES";
+    private static final String BUNDLE_ALREADY_CALLING  = "BUNDLE_ALREADY_CALLING";
 
     private int mLastPosition = -1;
 
@@ -79,6 +82,16 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setOffscreenPageLimit(1);
 
+
+        final ViewPagerIndicatorWithTextDot viewPagerIndicatorWithTextDot = view.findViewById(R.id.view_pager_indicator);
+
+        try {
+            viewPagerIndicatorWithTextDot.init(mModelSurvey.getQuestions().size(), 3, 40);
+        }
+        catch (Exception ioex) {
+            Log.e("EXCP", ioex.getMessage());
+        }
+
         ViewPager.OnPageChangeListener mPageChangeListener = new DefaultOnPageChangeListener(
             new CallbackOnPageChangeListener() {
                 @Override
@@ -102,6 +115,7 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
                             , String.format(Locale.getDefault(), "PAGE_SELECTED %d.\n %s"
                                     , position, question.toString()));
                     mViewPager.setEnabled(enabledPages[position]);
+                    viewPagerIndicatorWithTextDot.selectMarker(position);
                 }
 
                 @Override
@@ -133,6 +147,7 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
         outState.putParcelable(BUNDLE_SURVEY, mModelSurvey);
         outState.putInt(BUNDLE_LAST_POSITION, mLastPosition);
         outState.putBooleanArray(BUNDLE_ENABLED_PAGES, enabledPages);
+        outState.putBoolean(BUNDLE_ALREADY_CALLING, alreadyCalling);
     }
 
     @Override
@@ -142,6 +157,7 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
             mModelSurvey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
             mLastPosition = savedInstanceState.getInt(BUNDLE_LAST_POSITION);
             enabledPages = savedInstanceState.getBooleanArray(BUNDLE_ENABLED_PAGES);
+            alreadyCalling = savedInstanceState.getBoolean(BUNDLE_ALREADY_CALLING);
         }
     }
 
@@ -155,9 +171,11 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
                     , msg
                     , Toast.LENGTH_SHORT).show();
         }
-
         mViewPager.setEnabled(enabledPages[mLastPosition]);
     }
+
+
+    private boolean alreadyCalling = false;
 
     private void tryEndSurvey() {
         boolean flag = true;
@@ -167,13 +185,13 @@ public class FragmentSurvey extends Fragment implements ObserverQuestion {
                 break;
             }
         }
-
         /**
          * Se todas as perguntas foram respondidas corretamente podemos finalizar o formulario e fazer
          * qualquer coisa com os dados
          * */
-        if (flag) {
+        if (flag && ! alreadyCalling) {
             mModelSurvey.end();
+            alreadyCalling = true;
         }
     }
 

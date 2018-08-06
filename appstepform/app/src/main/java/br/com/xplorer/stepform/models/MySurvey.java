@@ -1,7 +1,8 @@
 package br.com.xplorer.stepform.models;
 
-import android.content.Context;
 import android.os.Parcel;
+import android.support.annotation.IdRes;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import lib.view.stepform.models.Question;
 
 public class MySurvey extends AbstractSurvey {
 
-    public MySurvey(Context context, List<Question> questions, SurveyCallback surveyCallback) {
-        super(context, questions, surveyCallback);
+    public MySurvey(FragmentActivity fragmentActivity, List<Question> questions, SurveyCallback surveyCallback, @IdRes int res) {
+        super(fragmentActivity, questions, surveyCallback, res);
     }
 
     public MySurvey(Parcel reader) {

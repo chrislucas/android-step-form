@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".views.fragments.FragmentSurvey"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
     <lib.view.stepform.views.viewpager.ViewPagerDisableMovement
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0sp"
+        android:layout_weight="0.9">
         <!--
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/title"
@@ -24,4 +26,13 @@
             />
             -->
     </lib.view.stepform.views.viewpager.ViewPagerDisableMovement>
+
+    <lib.view.stepform.views.viewpager.ViewPagerIndicatorWithTextDot
+        android:id="@+id/view_pager_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="0.1"
+        android:background="@color/black"
+        android:orientation="horizontal" />
+
 </LinearLayout>

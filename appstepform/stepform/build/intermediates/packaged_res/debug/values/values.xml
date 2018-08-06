@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#000000</color>
+    <color name="royal_blue">#4096ff</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
     <string name="app_name">stepform</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
 </resources>

@@ -1,16 +1,17 @@
 package lib.view.stepform.views.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import lib.view.stepform.R;
 import lib.view.stepform.models.AbstractSurvey;
-import lib.view.stepform.models.ModelSurvey;
 import lib.view.stepform.views.fragments.FragmentSurvey;
 
-public class ActivitySurvey extends AppCompatActivity {
+public class ActivitySurvey extends AppCompatActivity  {
 
     public static final String BUNDLE_SURVEY = "BUNDLE_SURVEY";
 
@@ -65,4 +66,6 @@ public class ActivitySurvey extends AppCompatActivity {
             modelSurvey = savedInstanceState.getParcelable(BUNDLE_SURVEY);
         }
     }
+
+
 }

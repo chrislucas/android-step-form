@@ -1,17 +1,15 @@
 package lib.view.stepform.models;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
 import lib.view.stepform.action.SurveyCallback;
-import lib.view.stepform.views.activity.ActivitySurvey;
+import lib.view.stepform.views.fragments.FragmentSurvey;
 import lib.view.stepform.views.viewpager.transformer.ScaleViewPageTransformer;
 
 public abstract class AbstractSurvey implements Parcelable {
@@ -19,28 +17,35 @@ public abstract class AbstractSurvey implements Parcelable {
 
     protected SurveyCallback surveyCallback;
 
-    transient protected Context context;
+    transient protected FragmentActivity fragmentActivity;
 
     protected ViewPager.PageTransformer mPageTransformer = new ScaleViewPageTransformer();
 
     protected AbstractSurvey() {}
 
-    public AbstractSurvey(Context context, List<Question> questions, SurveyCallback surveyCallback) {
+    @IdRes
+    protected int idResourceLayout;
+
+    public AbstractSurvey(FragmentActivity fragmentActivity, List<Question> questions
+            , SurveyCallback surveyCallback, @IdRes int idResourceLayout) {
         this.questions = questions;
+        this.fragmentActivity = fragmentActivity;
         this.surveyCallback = surveyCallback;
-        this.context = context;
+        this.idResourceLayout = idResourceLayout;
     }
+
 
     public final void start() {
         surveyCallback.beforeStart();
-        Intent intent = new Intent(context, ActivitySurvey.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ActivitySurvey.BUNDLE_SURVEY, this);
-        intent.putExtras(bundle);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-        if (context instanceof FragmentActivity) {
-            ( (AppCompatActivity) context).finish();
+        FragmentManager fm = fragmentActivity.getSupportFragmentManager();
+        if (fm != null) {
+            String tag = FragmentSurvey.class.getSimpleName();
+            if (fm.findFragmentByTag(tag) == null) {
+                fm.beginTransaction()
+                        .replace(idResourceLayout, FragmentSurvey.newInstance(this), tag)
+                        .addToBackStack(tag)
+                        .commit();
+            }
         }
     }
 
@@ -52,6 +57,10 @@ public abstract class AbstractSurvey implements Parcelable {
 
     public SurveyCallback getSurveyCallback() {
         return surveyCallback;
+    }
+
+    public void setSurveyCallback(SurveyCallback surveyCallback) {
+        this.surveyCallback = surveyCallback;
     }
 
     public void setPageTransformer(ViewPager.PageTransformer mPageTransformer) {
